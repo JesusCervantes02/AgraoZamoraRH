@@ -1,0 +1,169 @@
+:root{
+    
+    --azul:#134074;
+    --azulOscuro:#0B2545;
+    --azulGris:#8DA9C4;
+    --blanco:#fff;
+    --fuente:'Quicksand', sans-serif;
+}
+
+html{
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*,::after, *::before{
+    box-sizing: inherit;
+}
+.header{
+
+    text-align: center;
+    font-size: 3rem; 
+    line-height: 1rem;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+  
+}
+
+.header img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.logo{
+    width: auto;
+    height: 30rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;    
+}
+.imagen{
+    margin: 2rem 0;
+    height: 30rem;
+    background-position: center center;
+}
+
+.header h1{
+    font-weight: normal;
+}
+.header span{
+    font-weight: bold;
+}
+.header p{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+body{
+    font-family: var(--fuente);
+    background-color: var(--azulOscuro);
+    align-items: center;
+    color: var(--blanco);
+    font-weight: bold;
+}
+
+.contenedor{
+    margin: 0 auto;
+    max-width: 120rem;
+    width: 95%;
+}
+
+.imagen-formulario{
+    background-image: url('../imagenes/ag.jpg');
+    background-position: center center;
+    background-size: cover;
+    height: 30rem;
+    flex: 0 0 calc(60%);
+    position: relative;
+}
+.imagen-formulario::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, rgba(141,169,196,.5),rgba(19,64,166,.5));
+}
+
+@media(min-width:768PX){
+    .imagen-formulario{
+        height: auto;
+        background-position: right;
+    }
+
+    .contenedor-formulario{
+        display: flex;
+    }
+}
+@media(min-widht:1200px){
+    .imagen-formulario{
+        background-position: center;
+        
+    }
+}
+
+
+.formulario{
+    padding: 5rem;
+    background-color: var(--azul);
+}
+
+
+.texto-formulario h2, .input label, .password-olvidada a, .texto-formulario p{
+    color:var(--blanco);
+}
+
+.texto-formulario h2{
+    font-size: 4rem;
+    text-align: center;
+}
+
+.texto-formulario p{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.input label{
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 2rem 0;
+}
+
+.password-olvidada a{
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 2.2rem;
+}
+
+
+.input input{
+    width: 100%;
+    padding: 2rem 1.6rem;
+    border-radius: 5rem;
+    font-size: 1.5rem;
+    outline: none;
+    border: none;
+}
+
+.input input[type="submit"]{
+    margin-top: 2rem;
+    background-color: var(--azulGris);
+    color: var(--blanco);
+    font-size: 2.2rem;
+    font-weight: bold;
+    border: none;
+    transition: background-color .3s ease-in-out;
+  
+}
+
+
+.input input[type="submit"]:hover{
+    cursor: pointer;
+    background-color: var(--azulOscuro);
+}
+footer{
+    text-align: center;
+    font-size: 2rem;
+    padding-top: 5rem;
+    font-weight: normal;
+}

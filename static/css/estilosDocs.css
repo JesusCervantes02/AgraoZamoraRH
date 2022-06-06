@@ -1,0 +1,104 @@
+/*Definir paleta de colores*/
+:root {
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #ffc107;
+    --secundario: #0097a7;
+    --terciario: #757575;
+    --grisclaro: #DFE9F3;
+    --azuldegaradado2: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
+
+
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    scroll-snap-type: y mandatory;
+}
+
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 16px;
+    /*1 rem=10px*/
+    font-family: 'Krub', sans-serif;
+    background-image: linear-gradient(to top, var(--blanco) 0%, var(--blanco) 100%);
+    /*Degaradado de color*/
+    padding-top: 2 rem;
+}
+
+h1{
+    font-size: 2rem;
+    text-align: center;
+}
+.contenedor {
+
+    max-width: 120rem;
+    margin: 0 auto;
+
+}
+
+.logo {
+    height: 18rem;
+    width: 22rem;
+
+}
+
+
+.encabezado {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 2rem;
+
+
+}
+
+.blanco{
+    color: white;
+    
+}
+.membrete {
+    display: block;
+    text-align: center;
+    font-size: 1.4rem;
+    line-height: 1.8;
+}
+
+.firmas{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 7rem;
+}
+
+.negritas{
+    font-weight: bold;
+}
+
+footer {
+    background-color: rgb(141, 140, 140);
+    height: 5rem;
+
+}
+
+.blancos{
+    
+    color: white;
+
+}
+.normal{
+    font-weight: normal;
+}
+.subrayar{
+    text-decoration: underline
+}
+
+.mayusculas{
+    text-transform: uppercase;
+    font-size: 1.2rem;
+}

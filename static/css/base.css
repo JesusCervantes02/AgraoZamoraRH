@@ -1,0 +1,817 @@
+:root{
+    --fuente:'Quicksand', sans-serif;
+
+
+    --azul:#134074;
+    --azulOscuro:#0B2545;
+    --azulGris:#8DA9C4;
+    --blanco:#fff;
+    --rosa:linear-gradient(to right, #FF512F 0%, #DD2476  51%, #FF512F  100%);
+    --pistache:linear-gradient(to right, #1D976C 0%, #93F9B9  51%, #1D976C  100%);
+    --gris:#ACB5C3;
+    --cafe:linear-gradient(to right, #1e130c 0%, #9a8478  51%, #1e130c  100%);
+    --amarillo: linear-gradient(to right, #F09819 0%, #EDDE5D  51%, #F09819  100%);
+    --azuldegradado:linear-gradient(to right, #1A2980 0%, #26D0CE  51%, #1A2980  100%);   
+    --azuldegaradado2:linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);  
+    --grisdegradado:linear-gradient(to right, #757F9A 0%, #D7DDE8  51%, #757F9A  100%);
+    --azulclarodegradado:linear-gradient(to right, #00c6ff 0%, #0072ff  51%, #00c6ff  100%);
+    --moradito:linear-gradient(to right, #6441A5 0%, #2a0845  51%, #6441A5  100%);
+    --naranja:linear-gradient(to right, #f46b45 0%, #eea849  51%, #f46b45  100%);
+    --verde:linear-gradient(to right, #52c234 0%, #061700  51%, #52c234  100%);
+    --negro: #000000;
+    --rojo:rgb(145, 32, 32);
+    --rosamaricon:linear-gradient(to right, #834d9b 0%, #d04ed6  51%, #834d9b  100%);
+    --grisOscuro: linear-gradient(to right, #606c88 0%, #3f4c6b  51%, #606c88  100%);
+    --verdeclarito:linear-gradient(to right, #0cebeb 0%, #20e3b2  51%, #0cebeb  100%);
+    --inputs: linear-gradient(to right, #D31027 0%, #EA384D  51%, #D31027  100%);
+      
+
+}
+
+html{
+    box-sizing: border-box;
+   font-size: 62.5%;
+}
+
+*,*:before, *:after{
+    box-sizing: inherit;
+}
+
+body{
+    font-family: var(--fuente);
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+/*Globales*/
+.contenedor{
+    /* max-width: 120rem;
+     width: 90%;*/
+     width: min(90%, 120rem);
+     margin: 0 auto;
+ }
+
+a{
+    text-decoration: none !important;
+}
+
+
+h1,h2,h3,h4{
+    font-family: var(--fuente);
+    line-height: 1.2;
+
+}
+
+h1{
+    font-size: 4.8rem;
+}
+
+h2{
+    font-size: 4rem;
+}
+
+h3{
+    font-size: 3.2rem;
+}
+
+h4{
+    font-size: 2.8rem;
+}
+
+img{
+    max-width: 100%;
+}
+.celda_pequeña{
+    font-size: 1.5rem;
+}
+.negritas{
+    font-weight: bold;
+}
+
+.normal{
+    font-weight: normal;
+}
+
+.nominas-tabla{
+    font-size: 1.8rem !important;
+    text-transform: uppercase;
+}
+
+.blancos{
+    color: var(--blanco);
+}
+textarea{
+    
+        height: 20rem;
+        width: 40rem;
+    
+}
+
+.subrayar{
+    text-decoration: underline
+}
+.encabezado_general{
+    font-size: 4rem;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.encabezado_secundario{
+    font-size: 2rem;
+    text-align: center;
+    font-weight: normal;
+    padding-bottom: 2rem;
+}
+.encabezado_terciario{
+    font-size: 1.8rem;
+    text-align: left;
+    padding-bottom: 2rem;
+}
+
+.encabezado4{
+    font-size: 2.2rem;
+    text-align: left;
+    padding-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+/*Formularios*/
+
+.foto-formulario{
+    height: 40rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+}
+
+@media (min-width: 768px) {
+    .foto-formulario{
+        height: 60rem;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+}
+
+.formulario{
+    display: block;
+    background-color: var(--blanco);
+    margin: -5rem auto 0 auto;
+    width: min(90rem, 100%);/*Min: Utiliza el valor mas pequeño*/
+    padding: -5rem;
+    gap: 1rem;
+    
+
+ 
+}
+.contenedor-formulario{
+    display: flex;
+    gap: 4rem;
+}
+.campo{
+    margin-bottom: 1rem;
+
+}
+
+.campo img{
+
+        display: flex;
+        width: 4rem;
+        height: 4rem;
+        text-align: right;
+        justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+    .contenedor-campos{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        grid-template-rows: auto auto 20 rem;
+        column-gap: 2rem;
+        }
+    }
+.paddingleft{
+    padding-left: 2rem;
+}
+
+.muchopadding{
+    padding-left: 5rem;
+}
+
+.span1{
+    font-weight: normal;
+    padding-left: 2rem;
+}
+.campo_label{
+    
+    font-weight: bold;
+    margin-bottom: .5rem;
+    display: block;
+}
+
+.campo_label2{
+    margin-bottom: .5rem;
+    display: block;
+}
+
+.campo_field{
+    
+    border: 1px solid var(--gris);
+    gap: 2rem !important;;
+    font-size: 1.5rem;
+    
+    width: 100%;
+    border: 0.1rem var(--gris) solid; 
+    padding: 1.5rem;
+
+
+
+}
+
+
+/*Header*/
+
+.header{
+    display: block;
+    text-align: center;
+    height: 50rem;
+    background-image: var(--azuldegaradado2);
+  
+}
+
+.logo{
+    width: auto;
+    height: 20rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;    
+}
+
+/*Reloj y fecha*/
+
+.tiempo{
+    display: block;
+    text-align: right;
+    color: var(--blanco);
+}
+
+.navegacion{
+    padding-bottom: 4rem;
+}
+.navegacion_enlace{
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    color: var(--blanco);
+    font-family: var(--fuente);
+    font-size: 2rem;
+    line-height: 2.8;
+
+}
+.barra{
+    gap: 2rem;
+}
+.navegacion_enlace:hover{
+    color: var(--gris);
+    font-size: 2.2rem;
+}
+
+.iconos{
+    width: 4rem;
+    height: 4rem;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .header{
+        height: 20rem;
+    }
+    .barra{
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    .navegacion{
+        display: flex;
+        gap: 5rem;
+        align-items: center;
+    }
+    .logo{
+        background-position: center,left;
+    }
+
+    .tiempo{
+        display: flex;
+        align-items: flex-end;
+        justify-content: end;
+        gap:2rem;
+        padding-bottom: 2rem;
+
+    }
+}
+
+.footer{
+    display: flex;
+    background-image: var(--azuldegaradado2);
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+.footer__texto{
+    text-align: center;
+    font-family: var(--fuente);
+    color: var(--blanco);
+    font-size: 2.2rem;
+}
+
+
+.botones_previos{
+    display: grid;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+   .botones_previos{
+    display: flex;
+    justify-content: center;
+   align-items: center;
+   }
+}
+
+.botones_formularios{
+    display: block;
+    font-family: var(--fuente);
+    color: var(--blanco);
+    padding: 1rem 3rem ;
+    font-size: 2rem;
+    /* text-transform: uppercase; */
+    transition: 0.5s;
+    box-shadow: 0 0 2rem var(--blanco);
+    font-weight: normal;
+    margin-bottom: 2rem;
+    border: none;
+    width: auto !important;
+    height: 4rem !important;
+    border-radius: 10px;
+    text-align: center;
+    background-size: 200% auto;
+    
+}
+.tabla .botones_formularios{
+ width: 20rem;
+}
+
+.botonCreate{
+    background-image: var(--verde);
+}
+
+.botonUpdate{
+background-image: var(--amarillo);
+}
+
+.botonDelete{
+background-image: var(--rosa);
+}
+
+.botonExpedientes{
+    background-image: var(--moradito);
+}
+
+.botonHistorial{
+    background-image: var(--verde);
+}
+
+
+
+/* .botonBuscar{
+
+} */
+.botonAtras{
+    background-image: var(--azulclarodegradado);
+}
+
+.botones_formularios:hover{
+    background-position: right center; 
+    color: var(--blanco);
+    /* font-size: 2.3rem; */
+}
+
+.botones_previos a, .botones_previos button{
+    display: flex;
+    text-align: right;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+
+.botones_previos img{
+    
+        display: flex;
+        width: 3rem;
+        height: 3rem;
+        text-align: right;
+        justify-content: space-between;
+}
+
+
+.tablaConsulta{
+    /* display: block; */
+    font-size: 1.5rem;
+    /* width: 50%; */
+    align-items: center;
+}
+
+.tablaConsulta a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    gap: 1rem;
+    
+}
+
+.tablaConsulta img{
+       
+        width: 2rem;
+        height: 2rem;
+       
+}
+/* Index */
+.bienvenida{
+    text-align: center;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+.datosPerfil{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 5rem;
+
+}
+
+.tablaIndex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-collapse: separate !important;
+
+}
+.tablaIndex th{
+    width: 20rem;
+    
+}
+
+.tablaIndex td{
+    width: 40rem;
+}
+
+
+.tablaIndex th, .tablaIndex td{
+    border: .05rem solid #ddd;
+}
+.tablaIndex tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.fotoPerfil{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    padding-bottom: 2rem;
+}
+.fotoPerfil img{
+    width: auto;
+    height: 30rem;
+}
+
+.actividades{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    line-height: 5rem;
+    padding-top: 5rem;
+    border-top: 1px solid var(--gris);
+}
+
+.boton{
+    display: block;
+    font-family: var(--fuente);
+    color: var(--blanco);
+    padding: 3rem ;
+    font-size: 2.5rem;
+    /* text-transform: uppercase; */
+    transition: 0.5s;
+    box-shadow: 0 0 2rem var(--blanco);
+    font-weight: normal;
+    margin-bottom: 2rem;
+    border: none;
+    width: 35rem !important;
+    height: 15rem !important;
+    border-radius: 10px;
+    background-size: 200% auto;
+    
+}
+
+.boton:hover {
+    background-position: right center; 
+    color: var(--blanco);
+    font-size: 2.8rem;
+  }
+
+.actividades a{
+    display: flex;
+    text-align: right;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btnSucursales{
+    background-image: var(--amarillo);
+}
+
+.btnEmpleados{
+    background-image: var(--rosa)
+}
+
+.btnNomina{
+    background-image: var(--pistache);
+
+}
+
+.btnCatalogos{
+    background-image: var(--azuldegradado);
+}
+
+.btnPermisos{
+    background-image: var(--grisOscuro);
+}
+
+.btnSolicitudes{
+    background-image: var(--verdeclarito);
+}
+
+
+.btnHistorial{
+background-image: var(--rosamaricon);
+}
+.actividades img{
+    display: flex;
+    width: 10rem;
+    height: 10rem;
+    text-align: right;
+    justify-content: space-between;
+}
+@media (min-width:768px ) {
+    .datosPerfil{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .fotoPerfil{
+        align-items:center;
+        justify-content: flex-end;
+    }
+    .tablaIndex{
+        align-items:center;
+        justify-content: flex-start;
+    }
+    .actividades{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        justify-items: center;
+        column-gap: 1rem;
+        gap:2rem
+    }
+}
+
+@media (min-width:992px) {
+    .actividades{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        justify-items: center;
+        column-gap: 1rem;
+        gap:2rem
+    }
+}
+
+/* Catalogos */
+
+.catalogos{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    line-height: 5rem;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    
+}
+
+.ciudad{
+    background-image: var(--pistache);
+}
+
+.estado{
+    background-image: var(--amarillo);
+}
+
+.puestos{
+    background-image: var(--rosa);
+}
+
+.turnos{
+    background-image: var(--cafe);
+}
+
+.departamentos{
+    background-image: var(--azulclarodegradado);
+}
+
+.periodos{
+    background-image: var(--grisdegradado);
+}
+
+.formaPago{
+    background-image: var(--moradito);
+}
+
+.percepciones{
+    background-image: var(--verde);
+}
+.deducciones{
+    background-image: var(--naranja);
+}
+
+.misexpendientes{
+    background-image: var(--moradito);
+}
+
+.catalogos img{
+        display: flex;
+        width: 10rem;
+        height: 10rem;
+        text-align: right;
+        justify-content: space-between;
+}
+.catalogos a{
+    display: flex;
+    text-align: left;
+    justify-content: space-between;
+    align-items: center;
+  
+}
+
+@media (min-width:768px ) {
+    .catalogos{
+        grid-template-columns: repeat(2,1fr);
+        gap: 2rem;
+    }
+}
+@media (min-width: 992px) {
+    .catalogos{
+        grid-template-columns: repeat(3,1fr);
+        gap: 2rem;
+    }
+}
+/*Departamentos*/
+.foto_departamentos{
+    background-image: url(../imagenes/FormDepartamentos.jpeg);
+}
+
+
+/*Estados*/
+.foto_estado{
+    background-image: url(../imagenes/MexicoSatelital.png);
+}
+
+/*Turnos*/
+.foto_turno{
+    background-image: url(../imagenes/TurnosImagen.jpg);
+}
+
+/*Puestos*/
+.foto_puesto{
+    background-image: url(../imagenes/imagenPuestos.png);
+}
+
+/*Ciudades*/
+.foto_ciudades{
+    background-image: url(../imagenes/Zamora.png);
+}
+
+/*Empleados*/
+.foto_empleados{
+    background-image: url(../imagenes/Empleados.jpg);
+}
+
+/*Periodos*/
+.foto_periodos{
+    background-image:url(../imagenes/Periodos.jpg);
+}
+
+/*FormasPago*/
+.foto_formasPago{
+    background-image: url(../imagenes/FormasPago.jpg);
+}
+
+/*Expedientes*/
+.foto_expedientes{
+    background-image: url(../imagenes/ExpedientesFoto.jpg);
+}
+
+/*Sucursales*/
+.foto_sucursales{
+    background-image: url(../imagenes/SucursalesGrande.jpg);
+}
+
+/*Percepciones*/
+.foto_percepciones{
+    background-image: url(../imagenes/PercepcionesGrande.jpg)
+}
+
+
+/*Ausencias justificadas*/
+.foto_vacaciones{
+    background-image: url(../imagenes/Vacaciones.jpg);
+}
+
+.foto_permisos{
+    background-image: url(../imagenes/permisos3.jpg);
+}
+
+.foto_incapacidad{
+    background-image: url(../imagenes/Incapacidad2.jpg);
+}
+
+/*Paginación y filtro*/
+.dataTables_length{
+    font-size: 1.5rem;
+    font-family: var(--fuente);
+}
+
+.dataTables_length select{
+    height: 3.5rem !important;
+    
+}
+
+.dataTables_filter input{
+    height: 3.5rem !important;
+    font-size: 1.5rem !important;
+}
+
+.row{
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    line-height: 1.5rem !important;
+}
+
+/*Validaciones*/
+
+.validarAlerta {
+    text-align: center;
+    background-color: var(--rojo);
+    color: white;
+    font-size: 1.8rem;
+
+
+}
+
+/*Formulario Empleados*/
+
+fieldset h4{
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.pagform{
+    justify-content: center !important;
+}
+.input{
+    transition: border-color 0.5s ease-out;
+}
+
+input:invalid{
+    border-color: red;
+}
+
+.input:valid{
+    border-color: green;
+
+}
+input:required:focus:valid {
+    background: url("https://assets.digitalocean.com/labs/icons/hand-thumbs-up.svg") no-repeat 95% 50% lightgreen;
+    background-size: 2.5rem;
+  }
+  input:focus:invalid {
+    background: url("https://assets.digitalocean.com/labs/icons/exclamation-triangle-fill.svg") no-repeat 95% 50% lightsalmon;
+    background-size: 2.5rem;
+  }
