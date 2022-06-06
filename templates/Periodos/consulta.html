@@ -1,0 +1,94 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Periodos</h1>
+
+<div class="botones_previos">
+    <a class="botones_formularios botonAtras" href="/catalogos">
+        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+        Regresar</a>
+
+    {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+    current_user.departamentos.nombre=='Contabilidad') )%}
+    <a class="botones_formularios botonCreate" href="/periodosNuevo">
+        <img src="{{url_for('static', filename='imagenes/Nuevo.png')}}" alt="">
+        Nuevo</a>
+    {%endif%}
+
+</div>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+<div class="table-responsive">
+    <table class="table tablaConsulta">
+        <thead class="thead-light">
+            <tr>
+
+                <th>Nombre</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Estatus</th>
+
+                {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                current_user.departamentos.nombre=='Contabilidad') )%}
+                <th>Detalles</th>
+                {%endif%}
+
+            </tr>
+        </thead>
+
+        {% for p in periodos %}
+        <tr>
+
+            <td>{{p.nombre}}</td>
+            <td>{{p.fechaIncio}}</td>
+            <td>{{p.fechaFin}}</td>
+            {%if p.estatus=='A'%}
+            <td>Activo</td>
+            {%endif%}
+            {%if p.estatus=='I'%}
+            <td>Inactivo</td>
+            {%endif%}
+
+
+            {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+            current_user.departamentos.nombre=='Contabilidad') )%}
+            <td>
+                <a href="/periodos/ver/{{p.idPeriodo}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path
+                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg>
+                </a>
+            </td>
+            {%endif%}
+        </tr>
+
+        {% endfor %}
+
+
+    </table>
+
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/periodos/pagina/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/periodos/pagina/{{pagina+1}}">Siguiente</a></li>
+            {%endif%}
+    </ul>
+</div>
+
+{% endblock %}

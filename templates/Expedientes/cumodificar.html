@@ -1,0 +1,148 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="encabezado_general">Actualizar Documento</h1>
+<h4 class="encabezado_secundario"> Expediente de: <span>{{current_user.nombre}}</span>
+    <span>{{current_user.apellidoPaterno}}</span> <span>{{current_user.apellidoMaterno}}</span>
+</h4>
+
+<div class="foto-formulario foto_expedientes"></div>
+<form class="formulario" action="/cuExpedientesActualizar" enctype="multipart/form-data" method="post">
+    <fieldset>
+        <div class="contenedor-campos">
+
+            <div class="campo">
+                <label class="campo_label" for="id">ID Empleado:</label>
+                <input class="campo_field" type="number" readonly value="{{expedientes.idEmpleado}}"
+                    placeholder="idEmpleado" name="idEmpleado" required>
+
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="id">ID Documento:</label>
+                <input class="campo_field" type="number" readonly value="{{expedientes.idDocumento}}"
+                    placeholder="idDocumento" name="idDocumento" required>
+
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre del Documento:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" value="{{expedientes.nombreDocumento}}"
+                    name="nombreDocumento" required maxlength="50">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Fecha de Entrega:</label>
+                <input class="campo_field" type="date" placeholder="fecha" value="{{expedientes.fechaEntrega}}"
+                    name="fechaEntrega" required readonly>
+            </div>
+            <div class="campo">
+                <label class="campo_label" for="nombre">Última Modificación:</label>
+                <input class="campo_field" type="date" placeholder="fecha" value="{{expedientes.ultimaModificacion}}"
+                    name="ultimaModificacion" required readonly>
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Documento:</label>
+                <input class="campo_field" type="file" placeholder="documento" name="documento">
+                <a data-toggle="modal" data-target="#documento" class="btn btn-info btn-lg"> Visualizar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                        <path
+                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonUpdate">
+            <img src="{{url_for('static', filename='imagenes/Actualizar.png')}}" alt="">
+            Actualizar</button>
+
+        <button type="button" class="botones_formularios botonDelete" data-toggle="modal" data-target="#myModal">
+            <img src="{{url_for('static', filename='imagenes/Eliminar.png')}}" alt="">
+            Eliminar</button>
+            <a class="botones_formularios botonAtras" href="/cuExpedientes/pagina/{{current_user.idEmpleado}}/1">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+    </div>
+</form>
+
+
+<!-- Modal Eliminar-->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminación de documentos</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                ¿Estas seguro de eliminar el documento : {{expedientes.nombreDocumento}} del expediente de
+                {{expedientes.empleados.nombre}} {{expedientes.empleados.apellidoPaterno}}
+                {{expedientes.empleados.apellidoMaterno}} ?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="/cuExpedientes/eliminar/{{expedientes.idDocumento}}" class="btn btn-info">Aceptar</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="documento">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Documento</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <embed src="/expedientes/empleado/{{expedientes.idDocumento}}" type="application/pdf" width="450px"
+                    height="600px">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+
+
+{% endblock %}

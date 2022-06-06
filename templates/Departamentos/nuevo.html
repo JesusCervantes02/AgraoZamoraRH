@@ -1,0 +1,48 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Registrar Departamentos</h1>
+
+
+
+<div class="foto-formulario foto_departamentos"></div>
+<form class="formulario" action="/departementosAgregar" enctype="multipart/form-data" method="post">
+    <fieldset>
+        <div class="contenedor-campos">
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="50">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Estatus:</label>
+                <select class="campo_field" name="estatus" required>
+                    <option selected disabled value="">---Selecciona---</option>
+                    <option value="A">Activo</option>
+                    <option value="I">Inactivo</option>
+                </select>
+            </div>
+
+
+        </div>
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonCreate">
+            <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+            Guardar</button>
+        <a class="botones_formularios botonAtras" href="/departamentos/pagina/1">
+            <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+            Regresar</a>
+    </div>
+</form>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}

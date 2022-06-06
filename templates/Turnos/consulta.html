@@ -1,0 +1,84 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Turnos</h1>
+
+<div class="botones_previos">
+    <a class="botones_formularios botonAtras" href="/catalogos">
+        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+        Regresar</a>
+
+        {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+            current_user.departamentos.nombre=='Recursos Humanos') )%}
+    <a class="botones_formularios botonCreate" href="/turnosNuevo">
+        <img src="{{url_for('static', filename='imagenes/Nuevo.png')}}" alt="">
+        Nuevo</a>
+    {%endif%}
+</div>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+<div class="table-responsive">
+    <table class="table tablaConsulta">
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Días</th>
+                {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                    current_user.departamentos.nombre=='Recursos Humanos') )%}
+                <th>Detalles</th>
+                {%endif%}
+            </tr>
+        </thead>
+
+        {% for tu in turnos %}
+        <tr>
+            <td>{{tu.idTurno}}</td>
+            <td>{{tu.nombre}}</td>
+            <td>{{tu.horaInicio}}</td>
+            <td>{{tu.horaFin}}</td>
+            <td>{{tu.dias}}</td>
+
+            {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                current_user.departamentos.nombre=='Recursos Humanos') )%}
+            <td>
+                <a href="/turnos/ver/{{tu.idTurno}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path
+                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg>
+                </a>
+            </td>
+            {%endif%}
+        </tr>
+        {% endfor %}
+
+
+    </table>
+
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/turnos/pagina/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/turnos/pagina/{{pagina+1}}">Siguiente</a></li>
+            {%endif%}
+    </ul>
+</div>
+{% endblock %}

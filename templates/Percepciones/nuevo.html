@@ -1,0 +1,43 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Percepciones</h1>
+
+
+<div class="foto-formulario foto_percepciones"></div>
+<form class="formulario" action="/percepcionesAgregar" enctype="multipart/form-data" method="post">
+    <fieldset>
+        <div class="contenedor-campos">
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="50">
+            </div>
+            
+        </div>
+
+        <div class="campo">
+            <label class="campo_label" for="nombre">Descripcion:</label>
+            <textarea class="campo_field" name="descripcion" maxlength="80" required></textarea>
+        </div>
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonCreate">
+            <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+            Guardar</button>
+        <a class="botones_formularios botonAtras" href="/percepciones/pagina/1">
+            <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+            Regresar</a>
+    </div>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}

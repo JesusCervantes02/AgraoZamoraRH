@@ -1,0 +1,142 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Checador de asistencias</h1>
+<h4 class="encabezado_secundario"> <span>{{current_user.nombre}}</span> <span>{{current_user.apellidoPaterno}}</span>
+    <span>{{current_user.apellidoMaterno}}</span>
+</h4>
+
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+<h4 class="encabezado_secundario">Datos del turno</h4>
+<br>
+<br>
+
+<form class="formulario" action="/AsistenciasCurrentEntrada" enctype="multipart/form-data" method="post"
+    onsubmit="return validarAsistencias(this)">
+
+    <fieldset>
+        <div class="contenedor-campos">
+
+            <div class="campo">
+                <label class="campo_label" for="Días">Nombre del turno</label>
+                <input class="campo_field" type="text" value="{{current_user.turnos.nombre}}" placeholder="Nombre"
+                    name="Nombre turno" required readonly>
+
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="Días">Días</label>
+                <input class="campo_field" type="text" value="{{current_user.turnos.dias}}" placeholder="Nombre"
+                    name="dias" required readonly>
+
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="horaEntrada">Hora de Entrada</label>
+                <input class="campo_field" type="time" placeholder="Nombre" name="horaEntrada" required readonly
+                    value="{{current_user.turnos.horaInicio}}">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="horaSalida">Hora de Salida</label>
+                <input class="campo_field" type="time" placeholder="Documento" name="horaSalida" required
+                    value="{{current_user.turnos.horaFin}}" readonly>
+            </div>
+
+            <div class="campo">
+                <input class="campo_field" type="hidden" placeholder="idEmpleado" name="idEmpleado" required
+                    value="{{current_user.idEmpleado}}" readonly>
+            </div>
+            <div class="campo">
+                <input class="campo_field" type="hidden" placeholder="idEmpleado" name="idEmpleado" required
+                    value="{{fechaActual}}" readonly>
+            </div>
+
+        </div>
+
+        <div class="campo botones_previos">
+
+
+            {%if contador!=1%}
+            <button type="submit" class="botones_formularios botonCreate">
+                Checar entrada</button>
+            {%endif%}
+
+            {% for asis in asistencias2 %}
+            
+            {%if asis.idEmpleado==current_user.idEmpleado%}
+            {%if asis.horaSalida==None and asis.fecha==fechaActual%}
+            <a class="botones_formularios botonDelete" href="/AsistenciasCurretSalida/actualizar/{{asis.idAsistencia}}">
+                Checar sálida</a>
+            {%endif%}
+            {%endif%}
+            {% endfor %}
+
+            <a class="botones_formularios botonAtras" href="/index">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+
+
+        </div>
+    </fieldset>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+<br>
+
+
+<div class="table-responsive">
+    <table class="table tablaConsulta ">
+        <thead class="thead-light">
+            <tr>
+                <th>Fecha</th>
+                <th>Día</th>
+                <th>Hora de entrada</th>
+                <th>Hora de Salida</th>
+
+            </tr>
+        </thead>
+
+        {% for asis in asistencias %}
+        <tr>
+
+            <td>{{asis.fecha}}</td>
+            <td>{{asis.dia}}</td>
+            <td>{{asis.horaEntrada}}</td>
+
+            {%if asis.horaSalida==None%}
+            <td>-</td>
+            {%endif%}
+            {%if asis.horaSalida!=None%}
+            <td>{{asis.horaSalida}}</td>
+            {%endif%}
+        </tr>
+       
+        {% endfor %}
+    </table>
+
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/asistenciasCurrent/pagina/{{current_user.idEmpleado}}/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/asistenciasCurrent/pagina/{{current_user.idEmpleado}}/{{pagina+1}}">Siguiente</a>
+            </li>
+            {%endif%}
+    </ul>
+</div>
+
+{% endblock %}

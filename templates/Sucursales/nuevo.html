@@ -1,0 +1,88 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="encabezado_general">Registrar Sucursales</h1>
+
+
+
+<div class="foto-formulario foto_sucursales"></div>
+<form class="formulario" action="/sucursalesAgregar" enctype="multipart/form-data" method="post">
+    <fieldset>
+        <div class="contenedor-campos">
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="50">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="telefono">Telefono:</label>
+                <input class="campo_field" type="tel" placeholder="Telefono" name="telefono" required id="telefonoSuc"
+                    pattern="[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]" maxlength="12"
+                    title="Formato válido ###-###-####" onblur="consultarTelefonoSuc()">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="direccion">Direccion:</label>
+                <input class="campo_field" type="text" placeholder="Direccion" name="direccion" required maxlength="80">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="colonia">Colonia:</label>
+                <input class="campo_field" type="text" placeholder="Colonia" name="colonia" required maxlength="50">
+            </div>
+
+
+            <div class="campo">
+                <label class="campo_label" for="codigoPostal">CodigoPostal:</label>
+                <input class="campo_field" type="text" placeholder="CodigoPostal" name="codigoPostal" required
+                    maxlength="5" pattern="[0-9][0-9][0-9][0-9][0-9]" title="Debe contener 5 caracteres numéricos">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="presupuesto">Presupuesto:</label>
+                <input class="campo_field" type="number" placeholder="Presupuesto" name="presupuesto" required min="0">
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="Estado">Estados</label>
+                <select class="campo_field" name="idEstado" id="est" required >
+                    <option selected disabled value="">---Selecciona---</option>
+                    {% for edo in estados %}
+                    <option value="{{edo.idEstado}}">{{edo.nombre}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="Ciudad">Ciudad</label>
+                <select class="campo_field" name="idCiudad" id="ciudades" required>
+                    <option selected disabled value="">---Selecciona---</option>
+
+                </select>
+            </div>
+
+        </div>
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonCreate" disabled id="registrar">
+            <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+            Guardar</button>
+            <a class="botones_formularios botonAtras" href="/sucursales/pagina/1">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+    </div>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock%}

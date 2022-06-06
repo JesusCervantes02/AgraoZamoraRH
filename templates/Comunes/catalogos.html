@@ -1,0 +1,51 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="encabezado_general">Catálogos</h1>
+
+
+<div class="catalogos">
+    {%if current_user.is_authenticated() and (current_user.is_admin())%}
+    <a class="boton ciudad" href="/ciudades/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Ciudad.png')}}" alt="">
+        Ciudades</a>
+    <a class="boton estado" href="/estados/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Estado.png')}}" alt="">
+        Estados</a>
+    {%endif%}
+
+    {%if current_user.is_authenticated() and (current_user.is_admin() or current_user.is_staff())%}
+    <a class="boton puestos" href="/puestos/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Puestos.png')}}" alt="">
+        Puestos</a>
+
+    {%endif%}
+
+
+    <a class="boton turnos" href="/turnos/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Turno.png')}}" alt="">
+        Turnos</a>
+    <a class="boton departamentos" href="/departamentos/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Departamento.png')}}" alt="">
+        Departamentos</a>
+    <a class="boton periodos" href="/periodos/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Periodo.png')}}" alt="">
+        Periodos</a>
+
+
+    <a class="boton formaPago" href="/formasPago/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/FormaPago.png')}}" alt="">
+        Formas de pago</a>
+
+    <a class="boton percepciones" href="/percepciones/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Percepciones.png')}}" alt="">
+        Percepciones</a>
+    <a class="boton deducciones" href="/deducciones/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Deducciones.png')}}" alt="">
+        Deducciones</a>
+
+</div>
+
+
+{% endblock %}

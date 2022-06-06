@@ -1,0 +1,236 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Nómina Nº {{nominas.idNomina}}</h1>
+
+<br>
+
+<div class="botones_previos">
+    <a class="botones_formularios botonAtras"
+        href="/nominasEnGeneracion/pagina/1/{{nominas.idPeriodo}}/{{current_user.idSucursal}}">
+        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+        Regresar</a>
+    <a class="botones_formularios percepciones" href="/percepciones/nuevo/pagina/1/{{nominas.idNomina}}">
+        <img src="{{url_for('static', filename='imagenes/Percepciones.png')}}" alt="">
+        Percepciones</a>
+
+    <a class="botones_formularios deducciones" href="/deducciones/nuevo/pagina/1/{{nominas.idNomina}}/{{totalPercepeciones}}">
+        <img src="{{url_for('static', filename='imagenes/Deducciones.png')}}" alt="">
+        Deducciones</a>
+
+</div>
+<br>
+<br>
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+
+<br>
+<div class="table-responsive">
+    <table class="table tablaConsulta nominas-tabla">
+        <thead class="thead-dark">
+            <tr>
+                <th>Folio</th>
+                <th>Sucursal</th>
+                <th>Departamento</th>
+                <th>Puesto</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>{{nominas.idNomina}}</td>
+            <td>{{nominas.empleados.sucursales.nombre}}</td>
+            <td>{{nominas.empleados.departamentos.nombre}}</td>
+            <td>{{nominas.empleados.puestos.nombre}}</td>
+            <td>{{nominas.fechaElaboracion}}</td>
+        </tr>
+    </table>
+</div>
+
+<br>
+<br>
+<br>
+
+
+<div class="table-responsive">
+    <h4 class="encabezado4 negritas">Datos del empleado</h4>
+<table>
+    <table class=" tablaConsulta nominas-tabla">
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Empleado</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{nominas.empleados.nombre}} {{nominas.empleados.apellidoPaterno}}
+                    {{nominas.empleados.apellidoMaterno}}</th>
+            </tr>
+            
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">CURP</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{nominas.empleados.curp}}</th>
+            </tr>
+
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Nº de afil IMMS</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{nominas.empleados.nss}}</th>
+            </tr>
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Salario diario</th>
+                <th class="blancos">---------</th>
+                <th class="normal">$ {{nominas.empleados.salarioDiario}} MXN</th>
+            </tr>
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Forma de pago:</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{nominas.formasPago.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Periodo de pago</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{nominas.periodos.nombre}}</th>
+            </tr>
+            <tr>
+                <th class="blancos">---</th>
+                <th class="negritas ">Días laborados</th>
+                <th class="blancos">---------</th>
+                <th class="normal">{{diasTrabajo}}</th>
+            </tr>
+</table>
+</div>
+
+<br>
+<br>
+
+<div class="table-responsive">
+    <h4 class="encabezado4 negritas">Percepciones</h4>
+<table>
+    <table class=" tablaConsulta nominas-tabla">
+            <tr>
+                <th class="blancos">---------</th>
+                <th class="negritas ">Sueldo:</th>
+                <th class="blancos">-------------------</th>
+                <th class="normal">$  {{quincena}}</th>
+            </tr>
+            {%for np in conNomPer%}
+            {%if np.idNomina==nominas.idNomina%}
+            <tr>
+                <th class="blancos">---------</th>
+                <th class="negritas ">{{np.percepciones.nombre}}:</th>
+                <th class="blancos">---------</th>
+                <th class="normal">$  {{np.importe}}</th>
+            </tr>
+            {%endif%}
+            {%endfor%}
+</table>
+<br>
+<table class=" tablaConsulta nominas-tabla">
+    <tr>
+        <th class="blancos">------------</th>
+        <th class="negritas ">Total percepciones:</th>
+        <th class="blancos">---------------------</th>
+        <th class="normal subrayar">$ {{totalPercepeciones}} </th>
+    </tr>
+    </table>
+</div>
+<br>
+<br>
+
+<div class="table-responsive">
+    <h4 class="encabezado4 negritas">Deducciones</h4>
+<table>
+    <table class=" tablaConsulta nominas-tabla">
+            {%for nd in conNomDec%}
+            {%if nd.idNomina==nominas.idNomina%}
+            <tr>
+                <th class="blancos">---------</th>
+                <th class="negritas ">{{nd.deducciones.nombre}}:</th>
+                <th class="blancos">--------------------------------------</th>
+                <th class="normal">$  {{nd.importe}}</th>
+            </tr>
+            {%endif%}
+            {%endfor%}
+</table>
+<br>
+<table class=" tablaConsulta nominas-tabla">
+    <tr>
+        <th class="blancos">------------</th>
+        <th class="negritas ">Total deducciones:</th>
+        <th class="blancos">---------------------</th>
+        <th class="normal subrayar">$ {{sumaDec}} </th>
+    </tr>
+    </table>
+<br>
+<br>
+<table class=" tablaConsulta nominas-tabla">
+    <tr>
+        <th class="blancos">------------</th>
+        <th class="negritas ">Ingreso neto a pagar:</th>
+        <th class="blancos">---------------------</th>
+        <th class="normal subrayar">$ {{sueldoNeto}} mxn</th>
+    </tr>
+    </table>
+</div>
+<br>
+<br>
+<br>
+<form class="formulario" action="/capturaNomina" enctype="multipart/form-data" method="post">
+    <div class="campo">
+        <label class="campo_label" for="estatus">Estatus</label>
+        <select class="campo_field" name="estatus" required> 
+            <option  value="C">Capturada</option>  
+            <option  value="R">Revisada</option> 
+            {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                current_user.departamentos.nombre=='Contabilidad' and  current_user.puestos.nombre=='Jefe de departamento'))%}
+            <option  value="A">Aprobada</option> 
+            {%endif%}
+            
+
+        </select>               
+    </div>
+
+    <h4 class="encabezado_secundario negritas">Da click en el botón guardar para capturar la nómina generada</h4>
+    <input type="hidden" name="idNomina" value="{{nominas.idNomina}}">
+    <input type="hidden" name="fechaElaboracion" value="{{nominas.fechaElaboracion}}">
+    <input type="hidden" name="fechaPago" value="{{nominas.fechaPago}}">
+    <input type="hidden" name="subtotal" value="{{totalPercepeciones}}">
+    <input type="hidden" name="retenciones" value="{{sumaDec}} ">
+    <input type="hidden" name="total" value="{{sueldoNeto}}">
+    <input type="hidden" name="diasTrabajados" value="{{diasTrabajo}}">
+    <input type="hidden" name="idEmpleado" value="{{nominas.idEmpleado}}">
+    <input type="hidden" name="idPeriodo" value="{{nominas.idPeriodo}}">
+    <input type="hidden" name="fechaInicio" value="{{nominas.periodos.fechaIncio}}">
+    <input type="hidden" name="fechaFin" value="{{nominas.periodos.fechaFin}}">
+    
+
+
+
+
+
+
+
+
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonCreate">
+            <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+            Capturar</button>
+           
+        
+    </div>
+</form>
+
+
+
+
+{% endblock %}

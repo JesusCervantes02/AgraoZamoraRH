@@ -1,0 +1,99 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="encabezado_general">Actualizar Percepciones</h1>
+
+
+
+<div class="foto-formulario foto_percepciones"></div>
+<form class="formulario" action="/percepcionesActualizar" enctype="multipart/form-data" method="post">
+    <fieldset>
+        <div class="contenedor-campos">
+            <div class="campo">
+                <label class="campo_label" for="id">ID:</label>
+                <input class="campo_field" type="number" readonly value="{{percepciones.idPercepcion}}"
+                    placeholder="Nombre" name="id" required maxlength="50">
+
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" value="{{percepciones.nombre}}"
+                    name="nombre" required maxlength="50">
+            </div>
+
+         
+            {%if current_user.is_authenticated() and (current_user.is_staff())%}
+            <div class="campo">
+                <label class="campo_label" for="nombre">Estatus:</label>
+                <select class="campo_field" name="estatus" required>
+
+                    {% if percepciones.estatus=='A'%}
+                    <option selected value="{{percepciones.estatus}}">Activo</option>
+                    {%endif%}
+
+                    {% if percepciones.estatus=='I'%}
+                    <option selected value="{{percepciones.estatus}}">Inactivo</option>
+                    {%endif%}
+                </select>
+            </div>
+            {%endif%}
+            {%if current_user.is_authenticated() and (current_user.is_admin())%}
+            <div class="campo">
+                <label class="campo_label" for="nombre">Estatus:</label>
+                <select class="campo_field" name="estatus" required>
+
+                    {% if percepciones.estatus=='A'%}
+                    <option selected value="{{percepciones.estatus}}">Activo</option>
+                    <option value="I">Inactivo</option>
+                    {%endif%}
+
+                    {% if percepciones.estatus=='I'%}
+                    <option selected value="{{percepciones.estatus}}">Inactivo</option>
+                    <option value="A">Activo</option>
+                    {%endif%}
+
+
+
+                </select>
+            </div>
+            {%endif%}
+        </div>
+        <div class="campo">
+            <label class="campo_label" for="nombre">Descripcion:</label>
+            <textarea class="campo_field" name="descripcion" maxlength="80"
+                required> {{percepciones.descripcion}}</textarea>
+        </div>
+
+
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonUpdate">
+            <img src="{{url_for('static', filename='imagenes/Actualizar.png')}}" alt="">
+            Actualizar</button>
+        <a class="botones_formularios botonAtras" href="/percepciones/pagina/1">
+            <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+            Regresar</a>
+    </div>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+
+
+
+
+
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+
+
+{% endblock %}

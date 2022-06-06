@@ -1,0 +1,273 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Solicitudes de ausencias justificadas</h1>
+
+{%if current_user.is_authenticated() and (current_user.is_staff() and
+current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre!='Recursos Humanos')%}
+
+<h4 class="encabezado_secundario"> Departamento: {{current_user.departamentos.nombre}}</h4>
+{%endif%}
+
+
+
+
+
+{%if current_user.is_authenticated() and current_user.tipo!='Administrador'%}
+<h4 class="encabezado_secundario">Sucursal: <span>{{current_user.sucursales.nombre}}</span></h4>
+{%endif%}
+
+
+<div class="botones_previos">
+    <a class="botones_formularios botonAtras" href="/index">
+        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+        Regresar</a>
+</div>
+
+<h4 class="encabezado_secundario">Filtros de estatus de solicitud</h4>
+{%if current_user.is_authenticated() and (current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre!='Recursos Humanos')%}
+    <div class="botones_previos">
+        <a class="botones_formularios botonCreate" href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/1/A">
+            <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+            Aprobada</a>
+            <a class="botones_formularios btnPermisos" href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/1/P">
+                <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+               Pendiente</a>
+                <a class="botones_formularios botonUpdate" href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/1/C">
+                    <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                    Cancelada</a>
+                    <a class="botones_formularios botonDelete" href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/1/R">
+                        <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                        Rechazada</a>
+    </div>
+
+    {%endif%}
+
+{%if current_user.is_authenticated() and ((current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre=='Recursos Humanos'))%}
+    <div class="botones_previos">
+        <a class="botones_formularios botonCreate" href="/solicitudesAdminRH/pagina/1/A">
+            <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+            Aprobada</a>
+            <a class="botones_formularios btnPermisos" href="/solicitudesAdminRH/pagina/1/P">
+                <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+               Pendiente</a>
+                <a class="botones_formularios botonUpdate" href="/solicitudesAdminRH/pagina/1/C">
+                    <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                    Cancelada</a>
+                    <a class="botones_formularios botonDelete" href="/solicitudesAdminRH/pagina/1/R">
+                        <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                        Rechazada</a>
+    </div>
+
+    {%endif%}
+
+
+{%if current_user.is_authenticated() and current_user.is_admin()%}
+<div class="botones_previos">
+    <a class="botones_formularios botonCreate" href="/solicitudesAdmin/pagina/1/A">
+        <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+        Aprobada</a>
+        <a class="botones_formularios btnPermisos" href="/solicitudesAdmin/pagina/1/P">
+            <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+           Pendiente</a>
+            <a class="botones_formularios botonUpdate" href="/solicitudesAdmin/pagina/1/C">
+                <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                Cancelada</a>
+                <a class="botones_formularios botonDelete" href="/solicitudesAdmin/pagina/1/R">
+                    <!-- <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt=""> -->
+                    Rechazada</a>
+</div>
+{%endif%}
+
+
+
+
+
+
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+<div class="table-responsive">
+    <table class="table tablaConsulta">
+        <thead class="thead-light">
+            <tr>
+                <th>Solicita</th>
+                {%if current_user.is_authenticated() and current_user.is_admin()%}
+                <th>Sucursal</th>
+                {%endif%}
+                <th>Departamento</th>
+                <th>Puesto</th>
+                <th>Fecha Solicitud</th>
+                <th>Días</th>
+                <th>Tipo</th>
+                <th>Estatus</th>
+                <th>Revisó</th>
+                <th>Evidencia</th>
+                <th>Detalles</th>
+
+            </tr>
+        </thead>
+
+        {%for aj in ausencias%}
+        <tr>
+            <td>{{aj.empleadoSolicita.nombre}} {{aj.empleadoSolicita.apellidoPaterno}}
+                {{aj.empleadoSolicita.apellidoMaterno}}</td>
+            {%if current_user.is_authenticated() and current_user.is_admin()%}
+                <td>{{aj.empleadoSolicita.sucursales.nombre}}</td>
+            {%endif%}
+            <td>{{aj.empleadoSolicita.departamentos.nombre}}</td>
+            <td>{{aj.empleadoSolicita.puestos.nombre}}</td>
+            <td>{{aj.fechaSolicitud}}</td>
+            <td>{{aj.dias}}</td>
+            {%if aj.tipo=="P"%}
+            <td>Permiso</td>
+            {%endif%}
+
+            {%if aj.tipo=="V"%}
+            <td>Vacaciones</td>
+            {%endif%}
+
+            {%if aj.tipo=="I"%}
+            <td>Incapacidad</td>
+            {%endif%}
+
+
+
+            {%if aj.estatus=="P"%}
+            <td>Pendiente</td>
+            {%endif%}
+
+            {%if aj.estatus=="A"%}
+            <td>Aceptada</td>
+            {%endif%}
+
+            {%if aj.estatus=="R"%}
+            <td>Rechazada</td>
+            {%endif%}
+
+            {%if aj.estatus=="C"%}
+            <td>Cancelada</td>
+            {%endif%}
+
+            {%if aj.idEmpleadoAutoriza!=None%}
+            <td>{{aj.empleadoAutoriza.nombre}} {{aj.empleadoAutoriza.apellidoPaterno}}
+                {{aj.empleadoAutoriza.apellidoMaterno}}</td>
+            {%endif%}
+
+            {%if aj.idEmpleadoAutoriza==None%}
+            <td>-</td>
+            {%endif%}
+            {%if aj.evidencia!=None%}
+                <td>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                      </svg>
+                </td>
+                {%endif%}
+                {%if aj.evidencia==None%}
+                <td>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>
+                </td>
+                
+                {%endif%}
+            <td>
+                <a href="/ausencias/Consulta/{{aj.idAusencia}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path
+                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg>
+                </a>
+            </td>
+
+        </tr>
+        {%endfor%}
+    </table>
+
+    <br>
+    <br>
+    <br>
+
+
+
+    {%if current_user.is_authenticated() and (current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre!='Recursos Humanos')%}
+
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link"
+                    href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link"
+                    href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/{{pagina+1}}">Siguiente</a></li>
+            {%endif%}
+    </ul>
+    {%endif%}
+
+
+    {%if current_user.is_authenticated() and ((current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre=='Recursos Humanos'))%}
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/solicitudesAdminRH/pagina/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/solicitudesAdminRH/pagina/{{pagina+1}}">Siguiente</a>
+            </li>
+            {%endif%}
+    </ul>
+    {%endif%}
+
+
+    {%if current_user.is_authenticated() and current_user.is_admin()%}
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/solicitudesAdmin/pagina/{{pagina-1}}">Anterior</a></li>
+            {%endif%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de
+                    <b>{{paginas}}</b></a></li>
+            {%if pagina>=paginas%}
+            <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+            {%else%}
+            <li class="page-item "><a class="page-link" href="/solicitudesAdmin/pagina/{{pagina+1}}">Siguiente</a></li>
+            {%endif%}
+    </ul>
+    {%endif%}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

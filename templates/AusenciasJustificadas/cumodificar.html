@@ -1,0 +1,272 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+{%if ausencias.tipo=='V'%}
+<h1 class="encabezado_general">Modificar solicitud de Vacaciones</h1>
+{%endif%}
+{%if ausencias.tipo=='P'%}
+<h1 class="encabezado_general">Modificar solicitud de Permiso</h1>
+{%endif%}
+{%if ausencias.tipo=='I'%}
+<h1 class="encabezado_general">Modificar solicitud de Incapacidad</h1>
+{%endif%}
+
+<h4 class="encabezado_secundario"> <span>{{current_user.nombre}}</span> <span>{{current_user.apellidoPaterno}}</span>
+    <span>{{current_user.apellidoMaterno}}</span>
+</h4>
+
+{%if ausencias.tipo=='V'%}
+<h4 class="encabezado_secundario">Dias de vacaciones disponibles: <span>{{current_user.diasVacaciones}}</span></h4>
+{%endif%}
+{%if ausencias.tipo=='P'%}
+<h4 class="encabezado_secundario">Dias de vacaciones disponibles: <span>{{current_user.diasPermiso}}</span></h4>
+{%endif%}
+
+
+
+{%if ausencias.tipo=='V'%}
+<div class="foto-formulario foto_vacaciones"></div>
+{%endif%}
+{%if ausencias.tipo=='P'%}
+<div class="foto-formulario foto_permisos"></div>
+{%endif%}
+{%if ausencias.tipo=='I'%}
+<div class="foto-formulario foto_incapacidad"></div>
+{%endif%}
+
+<form class="formulario" action="/ausencias/cuactualizar" enctype="multipart/form-data" method="post"
+    onsubmit="return validarAusenciasJustifcadas(this)">
+    <fieldset>
+        <div class="contenedor-campos">
+
+            <input type="hidden" name="idAusencia" value="{{ausencias.idAusencia}}">
+            <div class="campo">
+                <label class="campo_label" for="fechaSolicitud">Fecha Solicitud</label>
+                <input class="campo_field" type="date" placeholder="Fecha Solicitud" name="fechaSolicitud"
+                    value="{{ausencias.fechaSolicitud}}" required readonly>
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="fechaInicio">Fecha Inicio</label>
+                {%if ausencias.estatus=='P'%}
+                <input class="campo_field" type="date" placeholder="Fecha Inicio" name="fechaInicio"
+                    value="{{ausencias.fechaInicio}}" id="myDate1" onchange="calcularDias()" required>
+                {%endif%}
+
+                {%if ausencias.estatus=='A' or ausencias.estatus=='C'  or ausencias.estatus=='R'%}
+                <input class="campo_field" type="date" placeholder="Fecha Inicio" name="fechaInicio"
+                    value="{{ausencias.fechaInicio}}" id="myDate1" onchange="calcularDias()" required readonly>
+                {%endif%}
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="fechaFin">Fecha Fin</label>
+                {%if ausencias.estatus=='P'%}
+                <input class="campo_field" type="date" placeholder="Fecha Fin" name="fechaFin"
+                    value="{{ausencias.fechaFin}}" id="myDate2" onchange="calcularDias()" required>
+                {%endif%}
+                {%if ausencias.estatus=='A' or ausencias.estatus=='C' or ausencias.estatus=='R'%}
+                <input class="campo_field" type="date" placeholder="Fecha Fin" name="fechaFin"
+                    value="{{ausencias.fechaFin}}" id="myDate2" onchange="calcularDias()" required readonly>
+                {%endif%}
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="Dias">Dias</label>
+                <input class="campo_field" type="number" placeholder="Dias" name="dias" value="{{ausencias.dias}}"
+                    id="demo" required readonly>
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="tipo">Tipo</label>
+                {%if ausencias.tipo=='V'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Vacaciones" name="tipo" required
+                    readonly>
+                {%endif%}
+                {%if ausencias.tipo=='P'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Permiso" name="tipo" required readonly>
+                {%endif%}
+                {%if ausencias.tipo=='I'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Incapacidad" name="tipo" required
+                    readonly>
+                {%endif%}
+            </div>
+
+            {%if ausencias.estatus!='P'%}
+            <div class="campo">
+                <label class="campo_label" for="tipo">Revisó</label>
+                <input class="campo_field" type="text" placeholder="Reviso"
+                    value="{{ausencias.empleadoAutoriza.nombre}} {{ausencias.empleadoAutoriza.apellidoPaterno}} {{ausencias.empleadoAutoriza.apellidoMaterno}}"
+                    required readonly>
+            </div>
+            {%endif%}
+
+
+            <div class="campo">
+                <label class="campo_label" for="evidencia">Evidencia</label>
+                {%if ausencias.estatus=='P'%}
+                <input class="campo_field" type="file" placeholder="Documento" name="evidencia">
+                {%endif%}
+
+                {%if ausencias.evidencia!=None%}
+                <a data-toggle="modal" data-target="#evidencia" class="btn btn-info btn-lg"> Visualizar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                        <path
+                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                    </svg>
+                </a>
+                {%endif%}
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="estatus">Estatus</label>
+                {%if ausencias.estatus=='P'%}
+                <input class="campo_field" type="text" placeholder="estatus" value="Pendiente" name="estatus" required
+                    readonly>
+                {%endif%}
+
+                {%if ausencias.estatus=='A'%}
+                <input class="campo_field" type="text" placeholder="estatus" value="Aceptada" name="estatus" required
+                    readonly>
+                {%endif%}
+
+                {%if ausencias.estatus=='R'%}
+                <input class="campo_field" type="text" placeholder="estatus" value="Rechazada" name="estatus" required
+                    readonly>
+                {%endif%}
+
+                {%if ausencias.estatus=='C'%}
+                <input class="campo_field" type="text" placeholder="estatus" value="Cancelada" name="estatus" required
+                    readonly>
+                {%endif%}
+            </div>
+
+        </div>
+
+        <div class="campo">
+            <label class="campo_label" for="motivo">Motivo</label>
+            {%if ausencias.estatus=='P'%}
+            <textarea class="campo_field" name="motivo" maxlength="100" required>{{ausencias.motivo}}</textarea>
+            {%endif%}
+            {%if ausencias.estatus=='A' or ausencias.estatus=='C' or ausencias.estatus=='R'%}
+            <textarea class="campo_field" name="motivo" maxlength="100" readonly
+                required>{{ausencias.motivo}}</textarea>
+            {%endif%}
+        </div>
+
+        {%if ausencias.observaciones!=None and (ausencias.estatus=='C' or ausencias.estatus=='R' or ausencias.estatus=='P') %}
+        <div class="campo">
+            <label class="campo_label" for="motivo">Observaciones</label>
+            <textarea class="campo_field" name="motivo" maxlength="100" readonly
+                required>{{ausencias.observaciones}}</textarea>
+        </div>
+        {%endif%}
+        <input type="hidden" name="idEmpleadoSolicita" value="{{current_user.idEmpleado}}">
+        <input type="hidden" name="diasVacaciones" value="{{current_user.diasVacaciones}}">
+        <input type="hidden" name="diasPermiso" value="{{current_user.diasPermiso}}">
+
+
+        <div class="botones_previos">
+
+            {%if ausencias.estatus=='P'%}
+            <button type="submit" class="botones_formularios botonUpdate">
+                <img src="{{url_for('static', filename='imagenes/Actualizar.png')}}" alt="">
+                Actualizar</button>
+            {%endif%}
+            {%if ausencias.estatus=='P'%}
+            <button type="button" class="botones_formularios botonDelete" data-toggle="modal" data-target="#myModal">
+                <img src="{{url_for('static', filename='imagenes/Eliminar.png')}}" alt="">
+                Eliminar</button>
+            {%endif%}
+            <a class="botones_formularios botonAtras" href="/cuausencias/pagina/{{current_user.idEmpleado}}/1">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+        </div>
+
+    </fieldset>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+<!-- Modal evidencia -->
+
+<div class="modal fade" id="evidencia">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Documento</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <embed src="/ausencias/empleado/{{ausencias.idAusencia}}" type="application/pdf" width="450px"
+                    height="600px">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar-->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminación de solicitud</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+
+            {%if ausencias.tipo=="V"%}
+            <div class="modal-body">
+                ¿Estas seguro de eliminar la solicitud de vacaciones ?
+            </div>
+            {%endif%}
+
+            {%if ausencias.tipo=="P"%}
+            <div class="modal-body">
+                ¿Estas seguro de eliminar la solicitud de permiso ?
+            </div>
+            {%endif%}
+
+            {%if ausencias.tipo=="I"%}
+            <div class="modal-body">
+                ¿Estas seguro de eliminar la solicitud de incapacidad ?
+            </div>
+            {%endif%}
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="/ausencias/eliminar/{{ausencias.idAusencia}}" class="btn btn-info">Aceptar</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}

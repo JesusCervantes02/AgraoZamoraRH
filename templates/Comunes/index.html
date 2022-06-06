@@ -1,0 +1,126 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="bienvenida">Bienvenido</h1>
+<div class="datosPerfil">
+    <div class="fotoPerfil">
+
+        <img src="/empleados/foto/{{current_user.idEmpleado}}" alt="">
+
+
+    </div>
+    <table class="tablaIndex">
+
+        <tr>
+            <th>No. Empleado:</th>
+            <td>{{current_user.idEmpleado}}</td>
+        </tr>
+
+        <tr>
+            <th>Nombre:</th>
+            <td>{{current_user.nombre}} <span>{{current_user.apellidoPaterno}}</span>
+                <span>{{current_user.apellidoMaterno}}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>Departamento:</th>
+            <td>{{current_user.departamentos.nombre}}</td>
+        </tr>
+
+        <tr>
+            <th>Puesto:</th>
+            <td>{{current_user.puestos.nombre}}</td>
+        </tr>
+        <tr>
+            <th>Privilegios:</th>
+            <td>{{current_user.tipo}}</td>
+        </tr>
+        <tr>
+            <th>Sucursal:</th>
+            <td>{{current_user.sucursales.nombre}}</td>
+        </tr>
+    </table>
+</div>
+<div class="actividades">
+    {%if current_user.is_authenticated() and (current_user.is_admin())%}
+    <a class=" boton btnEmpleados" href="/empleadosAdmin/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Empleado.png')}}" alt="">
+        Empleados</a>
+    {%endif%}
+    {%if current_user.is_authenticated() and (current_user.is_staff())%}
+    <a class=" boton btnEmpleados" href="/empleadosStaff/pagina/1/{{current_user.idSucursal}}">
+        <img src="{{url_for('static', filename='imagenes/Empleado.png')}}" alt="">
+        Empleados</a>
+    {%endif%}
+
+    <a class=" boton misexpendientes" href="/cuExpedientes/pagina/{{current_user.idEmpleado}}/1">
+        <img src="{{url_for('static', filename='imagenes/Expedientes.png')}}" alt="">
+        Mi expediente</a>
+
+    <a class=" boton btnPermisos" href="/cuausencias/pagina/{{current_user.idEmpleado}}/1">
+        <img src="{{url_for('static', filename='imagenes/Permisos.png')}}" alt="">
+        Mis permisos</a>
+
+    <a class=" boton btnHistorial" href="/cuHistorialPuestos/pagina/{{current_user.idEmpleado}}/1">
+        <img src="{{url_for('static', filename='imagenes/Historial.png')}}" alt="">
+        Mi historial</a>
+
+    <a class="boton periodos" href="/asistenciasCurrent/pagina/{{current_user.idEmpleado}}/1">
+        <img src="{{url_for('static', filename='imagenes/Checador.png')}}" alt="">
+        Asistencias</a>
+
+        <a class=" boton turnos" href="/cuNominasConsulta/pagina/1">
+            <img src="{{url_for('static', filename='imagenes/FormaPago.png')}}" alt="">
+           Mis pagos</a>
+
+        {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+            current_user.departamentos.nombre=='Contabilidad') )%}
+    <a class=" boton btnNomina" href="/periodosxnomina/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Nomina.png')}}" alt="">
+        Nómina</a>
+        {%endif%}
+
+
+    <!-- url para las solicitudes de acuerdo a las necesidades -->
+    {%if current_user.is_authenticated() and (current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre!='Recursos Humanos')%}
+    <a class=" boton btnSolicitudes" href="/solicitudesxdep/pagina/{{current_user.idDepartamento}}/1/P">
+        <img src="{{url_for('static', filename='imagenes/Solicitudes.png')}}" alt="">
+        Solicitudes</a>
+    {%endif%}
+
+
+    {%if current_user.is_authenticated() and ((current_user.is_staff() and
+    current_user.puestos.nombre=='Jefe de departamento' and current_user.departamentos.nombre=='Recursos Humanos'))%}
+    <a class=" boton btnSolicitudes" href="/solicitudesAdminRH/pagina/1/P">
+        <img src="{{url_for('static', filename='imagenes/Solicitudes.png')}}" alt="">
+        Solicitudes</a>
+    {%endif%}
+
+
+        
+    {%if current_user.is_authenticated() and current_user.is_admin()%}
+        <a class=" boton btnSolicitudes" href="/solicitudesAdmin/pagina/1/P">
+            <img src="{{url_for('static', filename='imagenes/Solicitudes.png')}}" alt="">
+            Solicitudes</a>
+        {%endif%}
+
+
+    <a class=" boton btnSucursales" href="/sucursales/pagina/1">
+        <img src="{{url_for('static', filename='imagenes/Tienda.png')}}" alt="">
+        Sucursales</a>
+
+    
+
+    <a class=" boton btnCatalogos" href="/catalogos">
+        <img src="{{url_for('static', filename='imagenes/Catalogo.png')}}" alt="">
+        Catálogos</a>
+
+
+
+
+
+
+</div>
+{% endblock %}

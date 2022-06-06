@@ -1,0 +1,93 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Sucursales</h1>
+
+<div class="botones_previos">
+    <a class="botones_formularios botonAtras" href="/index">
+        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+        Regresar</a>
+
+        {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+            current_user.departamentos.nombre=='Recursos Humanos') )%}
+    <a class="botones_formularios botonCreate" href="/sucursalesNuevo">
+        <img src="{{url_for('static', filename='imagenes/Nuevo.png')}}" alt="">
+        Nueva</a>
+    {%endif%}
+
+</div>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+<div class="table-responsive">
+    <table class="table tablaConsulta " >
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Colonia</th>
+                <th>Ciudad</th>
+                <th>Estatus</th>
+                {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                    current_user.departamentos.nombre=='Recursos Humanos') )%}
+                <th>Detalles</th>
+                {%endif%}
+            </tr>
+        </thead>
+        {% for suc in sucursales %}
+        <tr>
+            <td>{{suc.idSucursal}}</td>
+            <td>{{suc.nombre}}</td>
+            <td>{{suc.telefono}}</td>
+            <td>{{suc.direccion}}</td>
+            <td>{{suc.colonia}}</td>
+            <td>{{suc.ciudades.nombre}} , {{suc.ciudades.estados.nombre}}</td>
+            {%if suc.estatus=='A'%}
+            <td>Activo</td>
+            {%endif%}
+            {%if suc.estatus=='I'%}
+            <td>Inactivo</td>
+            {%endif%}
+            {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                current_user.departamentos.nombre=='Recursos Humanos') )%}
+            <td>
+                <a href="/sucursales/ver/{{suc.idSucursal}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path
+                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg>
+                </a>
+            </td>
+            {%endif%}
+        </tr>
+        {% endfor %}
+
+
+
+    </table>
+<br>
+    <ul class="pagination justify-content-center">
+        {%if pagina<=1 %}
+            <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+        {%else%}
+            <li class="page-item "><a class="page-link" href="/sucursales/pagina/{{pagina-1}}">Anterior</a></li>
+        {%endif%}
+        <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de <b>{{paginas}}</b></a></li>
+        {%if pagina>=paginas%}
+        <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+        {%else%}
+        <li class="page-item "><a class="page-link" href="/sucursales/pagina/{{pagina+1}}">Siguiente</a></li>
+        {%endif%}
+      </ul>
+</div>
+
+{% endblock %}

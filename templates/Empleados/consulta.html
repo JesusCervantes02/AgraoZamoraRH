@@ -1,0 +1,112 @@
+{% extends "comunes/base.html" %} {% block principal %}
+
+<h1 class="encabezado_general">Empleados</h1>
+{%if current_user.is_authenticated() and (current_user.is_staff())%}
+<h4 class="encabezado_secundario"> Sucursal {{current_user.sucursales.nombre}}</h4>
+{%endif%}
+<div class="botones_previos">
+  <a class="botones_formularios botonAtras" href="/index">
+    <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="" />
+    Regresar</a>
+
+  <a class="botones_formularios botonCreate" href="/empleadosNuevo">
+    <img src="{{url_for('static', filename='imagenes/Nuevo.png')}}" alt="" />
+    Nuevo</a>
+</div>
+
+{% if get_flashed_messages() %} {% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{m}}</strong>
+</div>
+{% endfor %} {% endif%}
+<div class="table-responsive">
+  <table class="table tablaConsulta">
+    <thead class="thead-light">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Sexo</th>
+        <th>Sucursal</th>
+        <th>Departamento</th>
+        <th>Puesto</th>
+        <th>Estatus</th>
+        <th>Detalles</th>
+      </tr>
+    </thead>
+
+    {% for e in empleados %}
+    <tr>
+      <td>{{e.idEmpleado}}</td>
+      <td>
+        {{e.nombre}} <span>{{e.apellidoPaterno}}</span>
+        <span>{{e.apellidoMaterno}}</span>
+      </td>
+      <td>{{e.sexo}}</td>
+      <td>{{e.sucursales.nombre}}</td>
+      <td>{{e.departamentos.nombre}}</td>
+      <td>{{e.puestos.nombre}}</td>
+      {%if e.estatus=='A'%}
+      <td>Activo</td>
+      {%endif%}
+      {%if e.estatus=='I'%}
+      <td>Inactivo</td>
+      {%endif%}
+      {%if e.idEmpleado!=current_user.idEmpleado%}
+      <td>
+        <a href="/empleados/ver/{{e.idEmpleado}}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots"
+            viewBox="0 0 16 16">
+            <path
+              d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+          </svg>
+        </a>
+      </td>
+
+      {%endif%} {%if e.idEmpleado==current_user.idEmpleado%}
+      <td></td>
+      {%endif%}
+    </tr>
+    {% endfor %}
+  </table>
+
+
+  <br>
+  <br>
+  {%if current_user.is_authenticated() and (current_user.is_admin())%}
+  <ul class="pagination justify-content-center">
+    {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+      {%else%}
+      <li class="page-item "><a class="page-link" href="/empleadosAdmin/pagina/{{pagina-1}}">Anterior</a></li>
+      {%endif%}
+      <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de <b>{{paginas}}</b></a>
+      </li>
+      {%if pagina>=paginas%}
+      <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+      {%else%}
+      <li class="page-item "><a class="page-link" href="/empleadosAdmin/pagina/{{pagina+1}}">Siguiente</a></li>
+      {%endif%}
+  </ul>
+  {%endif%}
+
+
+  {%if current_user.is_authenticated() and (current_user.is_staff())%}
+  <ul class="pagination justify-content-center">
+    {%if pagina<=1 %} <li class="page-item dissabled"><a class="page-link" href="#">Anterior</a></li>
+      {%else%}
+      <li class="page-item "><a class="page-link"
+          href="/empleadosStaff/pagina/{{pagina-1}}/{{current_user.idSucursal}}">Anterior</a></li>
+      {%endif%}
+      <li class="page-item dissabled"><a class="page-link" href="#">Pagina <b>{{pagina}}</b> de <b>{{paginas}}</b></a>
+      </li>
+      {%if pagina>=paginas%}
+      <li class="page-item dissabled"><a class="page-link" href="#">Siguiente</a></li>
+      {%else%}
+      <li class="page-item "><a class="page-link"
+          href="/empleadosStaff/pagina/{{pagina+1}}/{{current_user.idSucursal}}">Siguiente</a></li>
+      {%endif%}
+  </ul>
+  {%endif%}
+</div>
+
+{% endblock %}

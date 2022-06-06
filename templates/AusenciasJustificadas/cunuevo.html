@@ -1,0 +1,105 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+
+{%if tipo=='V'%}
+<h1 class="encabezado_general">Registrar solicitud de Vacaciones</h1>
+{%endif%}
+{%if tipo=='P'%}
+<h1 class="encabezado_general">Registrar solicitud de Permiso</h1>
+{%endif%}
+{%if tipo=='I'%}
+<h1 class="encabezado_general">Registrar solicitud de Incapacidad</h1>
+{%endif%}
+  
+
+
+
+<h4 class="encabezado_secundario"> <span>{{current_user.nombre}}</span> <span>{{current_user.apellidoPaterno}}</span>
+    <span>{{current_user.apellidoMaterno}}</span>
+</h4>
+{%if tipo=='V'%}
+<h4 class="encabezado_secundario">Dias de vacaciones disponibles: <span>{{current_user.diasVacaciones}}</span></h4>
+{%endif%}
+{%if tipo=='P'%}
+<h4 class="encabezado_secundario">Dias de permiso disponibles: <span>{{current_user.diasPermiso}}</span></h4>
+{%endif%}
+
+{%if tipo=='V'%}
+<div class="foto-formulario foto_vacaciones"></div>
+{%endif%}
+{%if tipo=='P'%}
+<div class="foto-formulario foto_permisos"></div>
+{%endif%}
+{%if tipo=='I'%}
+<div class="foto-formulario foto_incapacidad"></div>
+{%endif%}
+  
+<form  class="formulario" action="/ausencias/cuagregar" enctype="multipart/form-data" method="post"  onsubmit="return validarAusenciasJustifcadas(this)">
+    <fieldset>
+        <div class="contenedor-campos">
+            <div class="campo">
+                <label class="campo_label" for="fechaInicio">Fecha inicio</label>
+                <input class="campo_field" type="date" placeholder="Fecha inicio" name="fechaInicio"  id="myDate1" onchange="calcularDias()" required >
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="fechaFin">Fecha fin</label>
+                <input class="campo_field" type="date" placeholder="Fecha fin"  name="fechaFin" id="myDate2" onchange="calcularDias()" required >
+            </div>
+
+            <div class="campo">
+                <label class="campo_label" for="dias">Dias</label>
+                <input class="campo_field" type="number" value="0" placeholder="Dias" name="dias" id="demo" required readonly>
+                
+            </div>
+      
+
+            <div class="campo">
+                <label class="campo_label" for="tipo">Tipo</label>
+                {%if tipo=='V'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Vacaciones" name="tipo" required readonly>
+                {%endif%}
+                {%if tipo=='P'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Permiso" name="tipo" required readonly>
+                {%endif%}
+                {%if tipo=='I'%}
+                <input class="campo_field" type="text" placeholder="Tipo" value="Incapacidad" name="tipo" required readonly>
+                {%endif%}
+
+            </div>
+
+        </div>
+
+            <div class="campo">
+                <label class="campo_label" for="motivo">Motivo</label>
+                <textarea class="campo_field" name="motivo" maxlength="100" required></textarea>
+            </div>
+            <div class="campo botones_previos">
+                <button type="submit" class="botones_formularios botonCreate">
+                    <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+                    Guardar</button>
+
+                    <a class="botones_formularios botonAtras" href="/cuausencias/pagina/{{current_user.idEmpleado}}/1">
+                        <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                        Regresar</a>
+
+                
+            </div>
+            <input type="hidden" name="idEmpleadoSolicita" value="{{current_user.idEmpleado}}">
+            <input type="hidden" name="diasVacaciones" value="{{current_user.diasVacaciones}}">
+            <input type="hidden" name="diasPermiso" value="{{current_user.diasPermiso}}">
+    </fieldset>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}

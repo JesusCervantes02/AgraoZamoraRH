@@ -1,0 +1,124 @@
+{% extends "comunes/base.html" %}
+
+{% block principal %}
+
+<h1 class="encabezado_general">Actualizar Turnos</h1>
+
+
+<div class="foto-formulario foto_turno"></div>
+<form class="formulario" action="/turnosActualizar" enctype="multipart/form-data" method="post"
+    onsubmit="return validarTurnos(this)">
+    <fieldset>
+        <div class="contenedor-campos">
+
+
+            <div class="campo">
+                <label class="campo_label" for="nombre">ID:</label>
+                <input class="campo_field" type="number" placeholder="ID" name="id" readonly value="{{turnos.idTurno}}">
+            </div>
+            <div class="campo">
+                <label class="campo_label" for="nombre">Nombre:</label>
+                <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="20"
+                    value="{{turnos.nombre}}">
+            </div>
+            <div class="campo">
+                <label class="campo_label" for="nombre">Hora Inicio:</label>
+                <input class="campo_field" type="time" placeholder="Hora de inicio" name="horaInicio" required
+                    maxlength="50" value="{{turnos.horaInicio}}">
+            </div>
+            <div class="campo">
+                <label class="campo_label" for="nombre">Hora Fin:</label>
+                <input class="campo_field" type="time" placeholder="Hora de finalisacion" name="horaFin" required
+                    maxlength="50" value="{{turnos.horaFin}}">
+            </div>
+            <div class="campo">
+                <label class="campo_label" for="siglas">Dias:</label>
+                <select class="campo_field" name="dias" required>
+                    <option selected value="{{turnos.dias}}">{{turnos.dias}}</option>
+
+                    <option value="Lunes,Martes,Miércoles,Jueves,Viernes,Sábado">
+                        Lunes,Martes,Miércoles,Jueves,Viernes,Sábado</option>
+                    <option value="Martes,Miércoles,Jueves,Viernes,Sábado,Domingo">
+                        Martes,Miércoles,Jueves,Viernes,Sábado,Domingo</option>
+                    <option value="Miércoles,Jueves,Viernes,Sábado,Domingo,Lunes">
+                        Miércoles,Jueves,Viernes,Sábado,Domingo,Lunes</option>
+                    <option value="Jueves,Viernes,Sábado,Domingo,Lunes,Martes">
+                        Jueves,Viernes,Sábado,Domingo,Lunes,Martes</option>
+                    <option value="Viernes,Sábado,Domingo,Lunes,Martes,Miercoles">
+                        Viernes,Sábado,Domingo,Lunes,Martes,Miercoles"</option>
+                    <option value="Sábado,Domingo,Lunes,Martes,Miercoles,Jueves">
+                        Sábado,Domingo,Lunes,Martes,Miercoles,Jueves</option>
+                    <option value="Domingo,Lunes,Martes,Miércoles,Jueves,Viernes">
+                        Domingo,Lunes,Martes,Miércoles,Jueves,Viernes</option>
+                    <option value="Lunes,Martes,Miércoles,Jueves,Viernes">Lunes,Martes,Miércoles,Jueves,Viernes</option>
+                    <option value="Lunes,Martes,Miércoles">Lunes,Martes,Miércoles</option>
+                    <option value="Lunes,Miercoles,Viernes">Lunes,Miercoles,Viernes</option>
+                    <option value="Martes,Jueves">Martes,Jueves</option>
+                    <option value="Martes,Jueves,Sábado">Martes,Jueves,Sábado</option>
+                    <option value="Jueves,Viernes,Sábado">Jueves,Viernes,Sábado</option>
+                    <option value="Sábado,Domingo">Sábado,Domingo</option>
+
+
+
+
+
+
+                </select>
+            </div>
+
+        </div>
+    </fieldset>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonUpdate">
+            <img src="{{url_for('static', filename='imagenes/Actualizar.png')}}" alt="">
+            Actualizar</button>
+        <a class="botones_formularios botonAtras" href="/turnos/pagina/1">
+            <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+            Regresar</a>
+    </div>
+    <div id="notificaciones" class="validarAlerta"></div>
+</form>
+
+
+
+<!-- Modal Eliminar-->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminación de Turnos de la empresa</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                ¿Estas seguro de eliminar el turno: {{turnos.nombre}}?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="/turnosEliminar/{{turnos.idTurno}}" class="btn btn-info">Aceptar</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+
+
+{% endblock %}

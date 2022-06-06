@@ -1,0 +1,346 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Registrar Empleados</h1>
+
+
+<div class="foto-formulario foto_empleados"></div>
+<form class="formulario" action="/empleadosAgregar" enctype="multipart/form-data" method="post"
+    onsubmit="return validarEmpleados(this)">
+
+    <ul class="nav nav-tabs pagform" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home">Información Personal
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="28"
+                        height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <circle cx="12" cy="7" r="4" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu1">Información de domicilio
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-2" width="28"
+                        height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <line x1="18" y1="6" x2="18" y2="6.01" />
+                        <path d="M18 13l-3.5 -5a4 4 0 1 1 7 0l-3.5 5" />
+                        <polyline points="10.5 4.75 9 4 3 7 3 20 9 17 15 20 21 17 21 15" />
+                        <line x1="9" y1="4" x2="9" y2="17" />
+                        <line x1="15" y1="15" x2="15" y2="20" />
+                    </svg>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2">Información escolar
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="28"
+                    height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
+                    <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
+                </svg>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu3">Información laboral
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase" width="28"
+                    height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <rect x="3" y="7" width="18" height="13" rx="2" />
+                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="12" y1="12" x2="12" y2="12.01" />
+                    <path d="M3 13a20 20 0 0 0 18 0" />
+                </svg>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <fieldset id="home" class="container tab-pane active">
+            <h4>Infomación Personal</h4>
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="nombre">Nombre:</label>
+                    <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="30">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="apellidoPaterno">Apellido paterno:</label>
+                    <input class="campo_field" type="text" placeholder="Apellido paterno" name="apellidoPaterno"
+                        required maxlength="30">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="apellidoMaterno">Apellido materno:</label>
+                    <input class="campo_field" type="text" placeholder="Apellido materno" name="apellidoMaterno"
+                        required maxlength="30">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="sexo">Sexo:</label>
+                    <select class="campo_field" name="sexo" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        <option value="H">Hombre</option>
+                        <option value="M">Mujer</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="fechaNacimiento">Fecha de nacimiento:</label>
+                    <input class="campo_field" type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="curp">CURP:</label>
+                    <input class="campo_field" type="text" id="curp" placeholder="CURP" name="curp" required
+                        maxlength="18"
+                        pattern="[A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][0-9A-Z][0-9]"
+                        onblur="consultarCurp()">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="estadoCivil">Estado civil:</label>
+                    <select class="campo_field" name="estadoCivil" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                    </select>
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="telefono">Teléfono:</label>
+                    <input class="campo_field" type="tel" id="telefono" placeholder="Teléfono" name="telefono" required
+                        pattern="[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]" maxlength="12"
+                        onblur="consultarTelefono()">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="email">Email:</label>
+                    <input class="campo_field" id="email" type="email" placeholder="Email" name="email" required
+                        maxlength="100" onblur="consultarEmail()">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="password">Password:</label>
+                    <input class="campo_field" type="password" placeholder="Password" name="password" required
+                        maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="Debe contener al menos 8 caracteres entre ellos una letra mayuscula, una minúscula, un caracter especial y un caracter numérico"
+                        id="password">
+                    <input type="checkbox" id="ver" onclick="verPassword()" style="margin:5px"><span
+                        class="glyphicon glyphicon-eye-close"></span> Ver Contraseña
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="password">Foto:</label>
+                    <input class="campo_field" type="file" placeholder="Foto" name="fotografia" required
+                        accept=".jpg, .jpeg, .png">
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset id="menu1" class="container tab-pane fade">
+            <h4>Información del domicilio</h4>
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="direccion">Dirección:</label>
+                    <input class="campo_field" type="text" placeholder="Dirección" name="direccion" required
+                        maxlength="80">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="colonia">Colonia:</label>
+                    <input class="campo_field" type="text" placeholder="Colonia" name="colonia" required maxlength="50">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="CP">Código Postal:</label>
+                    <input class="campo_field" type="text" placeholder="Código Postal" name="codigoPostal" required
+                        maxlength="5" pattern="[0-9][0-9][0-9][0-9][0-9]" title="Debe contener 5 caracteres numéricos">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="Estado">Estados</label>
+                    <select class="campo_field" name="idEstado" id="est" required >
+                        <option selected disabled value="">---Selecciona---</option>
+                        {% for edo in estados %}
+                        <option value="{{edo.idEstado}}">{{edo.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="Ciudad">Ciudad</label>
+                    <select class="campo_field" name="idCiudad" id="ciudades" required>
+                        <option selected disabled value="">---Selecciona---</option>
+
+                    </select>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset id="menu2" class="container tab-pane fade">
+            <h4>Información escolar</h4>
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="escolaridad">Escolaridad:</label>
+                    <select class="campo_field" name="escolaridad" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label class="campo_label" for="especialidad">Especialidad</label>
+                    <input class="campo_field" type="text" placeholder="Especialidad" name="especialidad" required
+                        maxlength="100">
+                </div>
+            </div>
+        </fieldset>
+
+
+        <fieldset id="menu3" class="container tab-pane fade">
+            <h4>Información laboral</h4>
+            <div class="contenedor-campos">
+
+                <div class="campo">
+                    <label class="campo_label" for="sucursal">Sucursal</label>
+                    <select class="campo_field" name="idSucursal" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        {% for suc in sucursales %}
+                        <option value="{{suc.idSucursal}}">{{suc.nombre}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="departamento">Departamento</label>
+                    <select class="campo_field" name="idDepartamento" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        {% for dep in departamentos %}
+                        <option value="{{dep.idDepartamento}}">{{dep.nombre}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="puesto">Puesto</label>
+                    <select class="campo_field" id="idPuesto" name="idPuesto" required onblur="consultarPuestos()">
+                        <option selected disabled value="">---Selecciona---</option>
+                        {% for p in puestos %}
+                        <option value="{{p.idPuesto}}">{{p.nombre}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="salarioDiario">Salario diario (MXN)</label>
+                    <input class="campo_field" type="number" placeholder="Salario diario" name="salarioDiario"
+                        id="salarioDiario" required onblur="consultarPuestos()" value="0.00" min="0">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="fechaContratacion">Fecha de contratacion</label>
+                    <input class="campo_field" placeholder="fechaContratacion" name="fechaContratacion" type="date"
+                        required>
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="turno">Turno</label>
+                    <select class="campo_field" name="idTurno" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        {% for t in turnos %}
+                        <option value="{{t.idTurno}}">{{t.nombre}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="nss">NSS</label>
+                    <input class="campo_field" type="text" id="nss" placeholder="NSS" name="nss" required maxlength="10"
+                        pattern="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"
+                        title="Debe contener 10 caracteres numéricos" onblur="consultarNss()">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="diasVacaciones">Días de vacaciones</label>
+                    <input class="campo_field" type="number" placeholder="Días de vacaciones" name="diasVacaciones"
+                        required min="1">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="diasPermiso">Días de permiso</label>
+                    <input class="campo_field" type="number" placeholder="Días de permiso" name="diasPermiso" required
+                        min="1">
+                </div>
+                <div class="campo">
+                    <label class="campo_label" for="tipo">Tipo de usuario:</label>
+                    <select class="campo_field" name="tipo" required>
+                        <option selected disabled value="">---Selecciona---</option>
+                        {%if current_user.is_authenticated() and (current_user.is_admin() or (current_user.is_staff() and
+                            current_user.departamentos.nombre=='Recursos Humanos') )%}
+                        <option value="Administrador">Administrador</option>
+                        {%endif%}
+                        <option value="Staff">Staff</option>
+                        <option value="Empleado">Empleado</option>
+                    </select>
+                </div>
+
+            </div>
+
+    </div>
+    </fieldset>
+    <div id="notificaciones1" class="validarAlerta"></div>
+    <div id="notificaciones2" class="validarAlerta"></div>
+    <div id="notificaciones3" class="validarAlerta"></div>
+    <div id="notificaciones4" class="validarAlerta"></div>
+    <div id="notificaciones5" class="validarAlerta"></div>
+    <div class="campo botones_previos">
+        <button type="submit" class="botones_formularios botonCreate" disabled id="registrar">
+            <img src="{{url_for('static', filename='imagenes/Guardar.png')}}" alt="">
+            Guardar</button>
+            {%if current_user.is_authenticated() and (current_user.is_admin())%}
+            <a class="botones_formularios botonAtras" href="/empleadosAdmin/pagina/1">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+            {%endif%}
+            {%if current_user.is_authenticated() and (current_user.is_staff())%}
+            <a class="botones_formularios botonAtras" href="/empleadosStaff/pagina/1/{{current_user.idSucursal}}">
+                <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                Regresar</a>
+            {%endif%}
+    </div>
+
+</form>
+
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}

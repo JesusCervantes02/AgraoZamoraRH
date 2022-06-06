@@ -1,0 +1,582 @@
+{% extends "comunes/base.html" %}
+{% block principal %}
+
+<h1 class="encabezado_general">Modificar empleado</h1>
+
+
+<div class="foto-formulario foto_empleados"></div>
+<form class="formulario" action="/empleadosActualizar" enctype="multipart/form-data" method="post"
+    onsubmit="return validarEmpleados(this)">
+
+    <ul class="nav nav-tabs pagform" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home">Información Personal
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="28"
+                        height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <circle cx="12" cy="7" r="4" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu1">Información de domicilio
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-2" width="28"
+                        height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <line x1="18" y1="6" x2="18" y2="6.01" />
+                        <path d="M18 13l-3.5 -5a4 4 0 1 1 7 0l-3.5 5" />
+                        <polyline points="10.5 4.75 9 4 3 7 3 20 9 17 15 20 21 17 21 15" />
+                        <line x1="9" y1="4" x2="9" y2="17" />
+                        <line x1="15" y1="15" x2="15" y2="20" />
+                    </svg>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2">Información escolar
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="28"
+                    height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
+                    <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
+                </svg>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu3">Información laboral
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase" width="28"
+                    height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <rect x="3" y="7" width="18" height="13" rx="2" />
+                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="12" y1="12" x2="12" y2="12.01" />
+                    <path d="M3 13a20 20 0 0 0 18 0" />
+                </svg>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <fieldset id="home" class="container tab-pane active">
+            <h4>Infomación Personal</h4>
+
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="idEmpleado">idEmpleado:</label>
+                    <input class="campo_field" type="number" placeholder="idEmpleado" name="idEmpleado" readonly
+                        value="{{empleados.idEmpleado}}">
+                </div>
+                <div class="campo">
+                    <label class="campo_label" for="nombre">Nombre:</label>
+                    <input class="campo_field" type="text" placeholder="Nombre" name="nombre" required maxlength="30"
+                        value="{{empleados.nombre}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="apellidoPaterno">Apellido paterno:</label>
+                    <input class="campo_field" type="text" placeholder="Apellido paterno" name="apellidoPaterno"
+                        required maxlength="30" value="{{empleados.apellidoPaterno}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="apellidoMaterno">Apellido materno:</label>
+                    <input class="campo_field" type="text" placeholder="Apellido materno" name="apellidoMaterno"
+                        required maxlength="30" value="{{empleados.apellidoMaterno}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="sexo">Sexo:</label>
+                    <select class="campo_field" name="sexo" required>
+
+                        {%if empleados.sexo=='H'%}
+                        <option selected value="{{empleados.sexo}}">Hombre</option>
+                        <option value="M">Mujer</option>
+                        {%endif%}
+
+                        {%if empleados.sexo=='M'%}
+                        <option selected value="{{empleados.sexo}}">Mujer</option>
+                        <option value="H">Hombre</option>
+                        {%endif%}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="fechaNacimiento">Fecha de nacimiento:</label>
+                    <input class="campo_field" type="date" placeholder="Fecha de nacimiento" name="fechaNacimiento"
+                        required value="{{empleados.fechaNacimiento}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="curp">CURP:</label>
+                    <input class="campo_field" type="text" placeholder="CURP" name="curp" required maxlength="18"
+                        value="{{empleados.curp}}"
+                        pattern="[A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z][A-Z][[0-9A-Z]][0-9]">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="estadoCivil">Estado civil:</label>
+                    <select class="campo_field" name="estadoCivil" required>
+
+                        {%if empleados.estadoCivil=='Soltero(a)'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+                        {%if empleados.estadoCivil=='Casado(a)'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+
+                        {%if empleados.estadoCivil=='Divorciado(a)'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+
+                        {%if empleados.estadoCivil=='Separado(a)'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+
+
+                        {%if empleados.estadoCivil=='Unión libre'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+
+                        {%if empleados.estadoCivil=='Viudo(a)'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Concubinato">Concubinato</option>
+                        {%endif%}
+
+                        {%if empleados.estadoCivil=='Concubinato'%}
+                        <option selected value="{{empleados.estadoCivil}}">{{empleados.estadoCivil}}</option>
+                        <option value="Soltero(a)">Soltero(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Separado(a)">Separado(a)</option>
+                        <option value="Unión libre">Unión libre</option>
+                        <option value="Viudo(a)">Viudo(a)</option>
+                        {%endif%}
+
+                    </select>
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="telefono">Teléfono:</label>
+                    <input class="campo_field" type="tel" placeholder="Teléfono" name="telefono" required maxlength="12"
+                        pattern="[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]" value="{{empleados.telefono}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="email">Email:</label>
+                    <input class="campo_field" type="email" placeholder="Email" name="email" required maxlength="100"
+                        value="{{empleados.email}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="password">Password:</label>
+                    <input class="campo_field" type="password" placeholder="Password" name="password" required
+                        value="{{empleados.password}}" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="Debe contener al menos 8 caracteres entre ellos una letra mayuscula, una minúscula, un caracter especial y un caracter numérico"
+                        id="password">
+                    {%if current_user.isAdmin%}
+                    <input type="checkbox" id="ver" onclick="verPassword()" style="margin:5px"><span
+                        class="glyphicon glyphicon-eye-close"></span> Ver Contraseña
+                    {%endif%}
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="password">Foto:</label>
+                    <input class="campo_field" type="file" placeholder="Foto" name="fotografia" accept="image/*">
+                    <a data-toggle="modal" data-target="#imagen" class="btn btn-info btn-lg"> Visualizar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-eye-fill" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                            <path
+                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset id="menu1" class="container tab-pane fade">
+            <h4>Información del domicilio</h4>
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="direccion">Dirección:</label>
+                    <input class="campo_field" type="text" placeholder="Dirección" name="direccion" required
+                        maxlength="80" value="{{empleados.direccion}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="colonia">Colonia:</label>
+                    <input class="campo_field" type="text" placeholder="Colonia" name="colonia" required maxlength="50"
+                        value="{{empleados.colonia}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="CP">Código Postal:</label>
+                    <input class="campo_field" type="text" placeholder="Código Postal" name="codigoPostal" required
+                        maxlength="5" value="{{empleados.codigoPostal}}" pattern="[0-9][0-9][0-9][0-9][0-9]">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="Estado">Estados</label>
+                    <select class="campo_field" name="idEstado" id="est" required>
+                        <option selected value="{{empleados.ciudades.estados.idEstado}}">{{empleados.ciudades.estados.nombre}}</option>
+                        {% for edo in estados %}
+                        {%if edo.idEstado!=empleados.ciudades.idEstado%}
+                            <option value="{{edo.idEstado}}">{{edo.nombre}}</option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="Ciudad">Ciudad</label>
+                    <select class="campo_field" name="idCiudad" id="ciudades" required>
+                        <option selected value="{{empleados.idCiudad}}">{{empleados.ciudades.nombre}}</option>
+                    </select>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset id="menu2" class="container tab-pane fade">
+            <h4>Información escolar</h4>
+            <div class="contenedor-campos">
+                <div class="campo">
+                    <label class="campo_label" for="escolaridad">Escolaridad:</label>
+                    <select class="campo_field" name="escolaridad" required>
+
+
+                        {%if empleados.escolaridad=='Secundaria'%}
+                        <option selected value="{{empleados.escolaridad}}">{{empleados.escolaridad}}</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                        {%endif%}
+
+                        {%if empleados.escolaridad=='Preparatoria'%}
+                        <option selected value="{{empleados.escolaridad}}">{{empleados.escolaridad}}</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                        {%endif%}
+
+
+                        {%if empleados.escolaridad=='Licenciatura'%}
+                        <option selected value="{{empleados.escolaridad}}">{{empleados.escolaridad}}</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                        {%endif%}
+
+                        {%if empleados.escolaridad=='Maestría'%}
+                        <option selected value="{{empleados.escolaridad}}">{{empleados.escolaridad}}</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Doctorado">Doctorado</option>
+                        {%endif%}
+
+                        {%if empleados.escolaridad=='Doctorado'%}
+                        <option selected value="{{empleados.escolaridad}}">{{empleados.escolaridad}}</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        {%endif%}
+
+                    </select>
+                </div>
+                <div class="campo">
+                    <label class="campo_label" for="especialidad">Especialidad</label>
+                    <input class="campo_field" type="text" placeholder="Especialidad" name="especialidad" required
+                        maxlength="100" value="{{empleados.especialidad}}">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset id="menu3" class="container tab-pane fade">
+            <h4>Información laboral</h4>
+            <div class="contenedor-campos">
+
+                <div class="campo">
+                    <label class="campo_label" for="sucursal">Sucursal</label>
+                    <select class="campo_field" name="idSucursal" required>
+                        <option selected value="{{empleados.idSucursal}}">{{empleados.sucursales.nombre}}</option>
+                        {% for suc in sucursales %}
+                        {%if suc.idSucursal!=empleados.idSucursal%}
+                        <option value="{{suc.idSucursal}}">{{suc.nombre}} </option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="departamento">Departamento</label>
+                    <select class="campo_field" name="idDepartamento" required>
+                        <option selected value="{{empleados.idDepartamento}}">{{empleados.departamentos.nombre}}
+                        </option>
+                        {% for dep in departamentos %}
+                        {%if dep.idDepartamento!=empleados.idDepartamento%}
+                        <option value="{{dep.idDepartamento}}">{{dep.nombre}} </option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="puesto">Puesto</label>
+                    <select class="campo_field" name="idPuesto" required id="idPuesto" onblur="consultarPuestos()">
+                        <option selected value="{{empleados.idPuesto}}">{{empleados.puestos.nombre}}</option>
+                        {% for p in puestos %}
+                        {%if p.idPuesto!=empleados.idPuesto%}
+                        <option value="{{p.idPuesto}}">{{p.nombre}} </option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="salarioDiario">Salario diario (MXN)</label>
+                    <input class="campo_field" type="number" placeholder="Salario diario" name="salarioDiario" required
+                        value="{{empleados.salarioDiario}}" id="salarioDiario" required onblur="consultarPuestos()">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="fechaContratacion">Fecha de contratación</label>
+                    <input class="campo_field" type="date" placeholder="Fecha de Contratación" name="fechaContratacion"
+                        required value="{{empleados.fechaContratacion}}">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="turno">Turno</label>
+                    <select class="campo_field" name="idTurno" required>
+                        <option selected value="{{empleados.idTurno}}">{{empleados.turnos.nombre}}</option>
+                        {% for t in turnos %}
+                        {%if t.idTurno!=empleados.idTurno%}
+                        <option value="{{t.idTurno}}">{{t.nombre}} </option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="nss">NSS</label>
+                    <input class="campo_field" type="text" placeholder="NSS" name="nss" required maxlength="10"
+                        value="{{empleados.nss}}" pattern="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]">
+                </div>
+
+                <div class="campo">
+                    <label class="campo_label" for="diasVacaciones">Días de vacaciones</label>
+                    <input class="campo_field" type="number" placeholder="Días de vacaciones" name="diasVacaciones"
+                        required min="1" value="{{empleados.diasVacaciones}}">
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="diasPermiso">Días de permiso</label>
+                    <input class="campo_field" type="number" placeholder="Días de permiso" name="diasPermiso" required
+                        min="1" value="{{empleados.diasPermiso}}">
+                </div>
+
+                {%if current_user.is_authenticated() and current_user.is_admin()%}
+                <div class="campo">
+                    <label class="campo_label" for="tipo">Tipo de usuario:</label>
+                    <select class="campo_field" name="tipo" required>
+
+
+                        {%if empleados.tipo=='Administrador'%}
+                        <option selected value="{{empleados.tipo}}">{{empleados.tipo}}</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Empleado">Empleado</option>
+                        {%endif%}
+
+                        {%if empleados.tipo=='Staff'%}
+                        <option selected value="{{empleados.tipo}}">{{empleados.tipo}}</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Empleado">Empleado</option>
+                        {%endif%}
+
+                        {%if empleados.tipo=='Empleado'%}
+                        <option selected value="{{empleados.tipo}}">{{empleados.tipo}}</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Staff">Staff</option>
+                        {%endif%}
+
+                    </select>
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="nombre">Estatus:</label>
+                    <select class="campo_field" name="estatus" required>
+
+                        {% if empleados.estatus=='A'%}
+                        <option selected value="{{empleados.estatus}}">Activo</option>
+                        <option value="I">Inactivo</option>
+                        {%endif%}
+
+                        {% if empleados.estatus=='I'%}
+                        <option selected value="{{empleados.estatus}}">Inactivo</option>
+                        <option value="A">Activo</option>
+
+
+                        {%endif%}
+
+                    </select>
+                </div>
+                {%endif%}
+                {%if current_user.is_authenticated() and current_user.is_staff()%}
+                <div class="campo">
+                    <label class="campo_label" for="tipo">Tipo de usuario:</label>
+                    <input class="campo_field" type="text" placeholder="Tipo de usuario" name="tipo" readonly required
+                        value="{{empleados.tipo}}">
+
+                
+                </div>
+
+
+                <div class="campo">
+                    <label class="campo_label" for="nombre">Estatus:</label>
+                    <input class="campo_field" type="text" placeholder="Estatus" name="estatus" readonly required
+                        value="{{empleados.estatus}}">
+                </div>
+
+
+                {%endif%}
+                <input type="hidden" name="idActualHistorial" id="" value="{{verid}}">
+                <input type="hidden" name="departamentoActual" id="" value="{{verdepartamento}}">
+                <input type="hidden" name="puestoActual" id="" value="{{verpuesto}}">
+                <input type="hidden" name="sueldoActual" id="" value="{{versueldo}}">
+                <input type="hidden" name="empleadoActual" id="" value="{{verempleado}}">
+                <input type="hidden" name="fechaInicio" id="" value="{{verfecha}}">
+
+            </div>
+        </fieldset>
+        <div class="campo botones_previos">
+            <button type="submit" class="botones_formularios botonUpdate">
+                <img src="{{url_for('static', filename='imagenes/Actualizar.png')}}" alt="" disabled id="registrar">
+                Actualizar</button>
+
+
+
+                {%if current_user.is_authenticated() and (current_user.is_admin())%}
+                <a class="botones_formularios botonAtras" href="/empleadosAdmin/pagina/1">
+                    <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                    Regresar</a>
+                {%endif%}
+                {%if current_user.is_authenticated() and (current_user.is_staff())%}
+                <a class="botones_formularios botonAtras" href="/empleadosStaff/pagina/1/{{current_user.idSucursal}}">
+                    <img src="{{url_for('static', filename='imagenes/Regresar.png')}}" alt="">
+                    Regresar</a>
+                {%endif%}
+
+        </div>
+
+        <div class="campo botones_previos">
+
+            <a class="botones_formularios botonExpedientes " href="/expedientes/pagina/{{empleados.idEmpleado}}/1">
+                <img src="{{url_for('static', filename='imagenes/Expedientes.png')}}" alt="">
+                Expediente</a>
+
+            <a class="botones_formularios periodos " href="/asistencias/pagina/{{empleados.idEmpleado}}/1">
+                <img src="{{url_for('static', filename='imagenes/Checador.png')}}" alt="">
+                Aistencias</a>
+
+            <a class="botones_formularios botonHistorial " href="/historialPuestos/pagina/{{empleados.idEmpleado}}/1">
+                <img src="{{url_for('static', filename='imagenes/Historial.png')}}" alt="">
+                Historial</a>
+
+                <a class="botones_formularios btnPermisos " href="/ausenciasXempleado/pagina/{{empleados.idEmpleado}}/1">
+                    <img src="{{url_for('static', filename='imagenes/Permisos.png')}}" alt="">
+                Permisos</a>
+
+            
+        </div>
+
+        <div id="notificaciones5" class="validarAlerta"></div>
+    </div>
+</form>
+<!-- Modal imagen -->
+<div class="modal fade" id="imagen">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Imagen de {{empleados.nombre}} <span>{{empleados.apellidoPaterno}}</span>
+                    <span>{{empleados.apellidoMaterno}}</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <img src="/empleados/foto/{{empleados.idEmpleado}}" height="100%" width="100%">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% if get_flashed_messages() %}
+{% for m in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{m}}</strong> .
+</div>
+{% endfor %}
+{% endif%}
+
+{% endblock %}
